@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Charities Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+</head>
+<body>
+    <div class="alert alert-primary" role="alert">
+        <strong>Charities Day Vote System</strong>
+    </div>
+    <div class="alert alert-info">
+        Cast your vote now!
+    </div>
+    <form method="POST" action="/votea">
+        <button type="submit" style="margin: 15px" name="vote_a" value="Vote A" class="btn btn-danger">Vote A</button>
+    </form>
+    <form method="POST" action="/voteb">
+        <button type="submit" style="margin: 15px" name="vote_b" value="Vote B" class="btn btn-success">Vote B</button>
+    </form>
+</body>
+</html>
