@@ -679,6 +679,7 @@ class Ui_MainWindow(object):
         self.pushButton_main_sequencerplay = QtWidgets.QPushButton(self.groupBox_5)
         self.pushButton_main_sequencerplay.setGeometry(QtCore.QRect(330, 20, 31, 31))
         self.pushButton_main_sequencerplay.setText("")
+        self.pushButton_main_sequencerplay.setCheckable(True)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(SCRIPT_DIR+"/resources/control.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_main_sequencerplay.setIcon(icon3)
