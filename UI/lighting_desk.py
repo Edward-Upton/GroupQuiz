@@ -133,15 +133,13 @@ SEQUENCE = Sequencer()
 
 SEQUENCE_THREAD = SequenceThread(SEQUENCE)
 
-def toggle_play():
+def toggle_play(thread):
     if UI.pushButton_main_sequencerplay.isChecked():
-        SEQUENCE_THREAD = SequenceThread(SEQUENCE)
-        SEQUENCE_THREAD.start()
+        thread.start()
     else:
-        SEQUENCE_THREAD.terminate()
-        del SEQUENCE_THREAD
+        thread.terminate()
 
-UI.pushButton_main_sequencerplay.clicked.connect(toggle_play)
+UI.pushButton_main_sequencerplay.clicked.connect(lambda: toggle_play(SEQUENCE_THREAD))
 
 UI.pushButton_addStep.clicked.connect(SEQUENCE.add_step)
 UI.pushButton_deleteStep.clicked.connect(SEQUENCE.delete_step)
