@@ -340,7 +340,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -364,7 +364,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -388,7 +388,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -412,7 +412,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -436,7 +436,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -460,7 +460,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -484,7 +484,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -508,7 +508,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -532,7 +532,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -556,7 +556,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -580,7 +580,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -604,7 +604,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -858,7 +858,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -939,7 +939,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1004,7 +1004,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1069,7 +1069,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1134,7 +1134,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1199,7 +1199,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1264,7 +1264,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1329,7 +1329,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1394,7 +1394,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1459,7 +1459,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1524,7 +1524,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1589,7 +1589,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
+       <family>Agency FB</family>
        <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -1904,50 +1904,87 @@
     <widget class="QLabel" name="label_s_xfade">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>270</y>
-       <width>51</width>
+       <x>80</x>
+       <y>100</y>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
-       <pointsize>9</pointsize>
+       <family>Agency FB</family>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
      <property name="text">
-      <string>X-Fade</string>
+      <string>Fade Time</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QSlider" name="verticalSlider_xfade">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_fadetime">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>100</y>
-       <width>32</width>
-       <height>169</height>
+       <width>62</width>
+       <height>22</height>
       </rect>
      </property>
-     <property name="maximum">
-      <number>127</number>
+     <property name="suffix">
+      <string> s</string>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="decimals">
+      <number>1</number>
      </property>
-     <property name="invertedAppearance">
-      <bool>false</bool>
+     <property name="minimum">
+      <double>0.100000000000000</double>
      </property>
-     <property name="tickPosition">
-      <enum>QSlider::TicksBothSides</enum>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_holdtime">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
      </property>
-     <property name="tickInterval">
-      <number>8</number>
+     <property name="suffix">
+      <string> s</string>
+     </property>
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_s_hold">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>130</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Agency FB</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Hold Time</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -1974,8 +2011,8 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
-       <pointsize>9</pointsize>
+       <family>Agency FB</family>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2015,8 +2052,8 @@
      </property>
      <property name="font">
       <font>
-       <family>Terminal</family>
-       <pointsize>9</pointsize>
+       <family>Agency FB</family>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>

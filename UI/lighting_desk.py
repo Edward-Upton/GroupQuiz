@@ -1,8 +1,7 @@
 import sys
 
 import mido
-from rtmidi.midiutil import open_midioutput
-from rtmidi.midiconstants import CONTROL_CHANGE
+import mido
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QStyleFactory
 from math import floor
@@ -16,25 +15,25 @@ UI.setupUi(WINDOW)
 
 class LightingDesk:
 
-    #def __init__(self):
-        #self.ports, self.port_name = open_midioutput(port_name="output")
-        #self.output = self.ports[1]
+    def __init__(self):
+        ports = mido.get_output_names()
+        print(ports[-1])
+        self.outport = mido.open_output(name=ports[-1])
 
 #   reference for midi code that will work
 #   https://spotlightkid.github.io/python-rtmidi/rtmidi.html
     def updateLight(self, slider_name):
         slider_letter, slider_number = slider_name.split('_')[1], slider_name.split('_')[2]
-        slider_object = getattr(UI, "verticalSlider_"+slider_letter+"_"+slider_number)
+        slider_object = getattr(UI, slider_name)
         slider_number = int(slider_number)
         value = slider_object.value()
+        msg = None
         if slider_letter == "a":
-            pass
-#            print("control_change ", slider_number-1, " value: ", value)
-#            self.output.send_message([CONTROL_CHANGE, (slider_number-1), value])
+            msg = mido.Message("control_change", control=(slider_number-1), value=value, time=1)
         elif slider_letter == "b":
-            pass
-#            print("control_change ", slider_number+11, " value: ", value)
-#            self.output.send_message([CONTROL_CHANGE, (slider_number+11), value])
+            msg = mido.Message("control_change", control=(slider_number+11), value=value, time=1)
+        print(str(msg))
+        self.outport.send(msg)
 
 DESK = LightingDesk()
 
@@ -49,7 +48,8 @@ class Sequencer:
         self.loop_timer = QtCore.QTimer()
 
         step = {}
-        step["time"] = 5
+        step["fade_time"] = 5
+        step["hold_time"] = 0.1
         for slider in range(1, 13):
             slider_object = getattr(UI, "verticalSlider_a_"+str(slider))
             step["verticalSlider_a_"+str(slider)] = slider_object.value()
@@ -57,11 +57,13 @@ class Sequencer:
             slider_object = getattr(UI, "verticalSlider_b_"+str(slider))
             step["verticalSlider_b_"+str(slider)] = slider_object.value()
         self.sequence.append(step)
+        UI.listWidget.setCurrentRow(0)
 
 
     def add_step(self):
         step = {}
-        step["time"] = 5
+        step["fade_time"] = UI.doubleSpinBox_fadetime.value()
+        step["hold_time"] = UI.doubleSpinBox_holdtime.value()
         for slider in range(1, 13):
             slider_object = getattr(UI, "verticalSlider_a_"+str(slider))
             step["verticalSlider_a_"+str(slider)] = slider_object.value()
@@ -94,6 +96,8 @@ class Sequencer:
         for slider in range(1, 13):
             slider_object = getattr(UI, "verticalSlider_b_"+str(slider))
             slider_object.setValue(step["verticalSlider_b_"+str(slider)])
+        UI.doubleSpinBox_fadetime.setValue(step["fade_time"])
+        UI.doubleSpinBox_holdtime.setValue(step["hold_time"])
 
 class SequenceThread(QtCore.QThread):
     def __init__(self, sequencer: Sequencer):
@@ -103,7 +107,7 @@ class SequenceThread(QtCore.QThread):
 
     def run(self):
         for index, step in enumerate(self.sequence):
-            for update in range(0, step["time"]*10, 1):
+            for update in range(0, int(step["time"]*10), 1):
                 for slider in range(1, 13):
                     slider_object_a = getattr(UI, "verticalSlider_a_"+str(slider))
                     slider_object_b = getattr(UI, "verticalSlider_b_"+str(slider))
@@ -114,30 +118,33 @@ class SequenceThread(QtCore.QThread):
                         begin_a = 0
                         begin_b = 0
 
-                    if index == len(self.sequence)-1:
-                        end_a = 0
-                        end_b = 0
+                    if index >= len(self.sequence)-1:
+                        break
                     else:
                         end_a = self.sequence[index+1]["verticalSlider_a_"+str(slider)]
                         end_b = self.sequence[index+1]["verticalSlider_b_"+str(slider)]
 
-                    gradient_a = (end_a-begin_a)/step["time"]
-                    gradient_b = (end_b-begin_b)/step["time"]
+                    gradient_a = (end_a-begin_a)/step["fade_time"]
+                    gradient_b = (end_b-begin_b)/step["fade_time"]
                     change_value_a = int(floor((gradient_a*update*0.1)+begin_a))
                     change_value_b = int(floor((gradient_b*update*0.1)+begin_b))
                     slider_object_a.setValue(change_value_a)
                     slider_object_b.setValue(change_value_b)
                 self.msleep(100)
+        self.msleep(step["hold_time"]*1000)
 
 SEQUENCE = Sequencer()
 
 SEQUENCE_THREAD = SequenceThread(SEQUENCE)
 
+
 def toggle_play(thread):
     if UI.pushButton_main_sequencerplay.isChecked():
+        thread = SequenceThread(SEQUENCE)
         thread.start()
     else:
         thread.terminate()
+        del thread
 
 UI.pushButton_main_sequencerplay.clicked.connect(lambda: toggle_play(SEQUENCE_THREAD))
 
@@ -171,4 +178,4 @@ UI.verticalSlider_b_11.valueChanged.connect(lambda: DESK.updateLight("verticalSl
 UI.verticalSlider_b_12.valueChanged.connect(lambda: DESK.updateLight("verticalSlider_b_12"))
 
 WINDOW.show()
-sys.exit(APP.exec_())
+APP.exec_()
