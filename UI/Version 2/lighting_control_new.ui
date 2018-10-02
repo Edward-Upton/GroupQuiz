@@ -57,6 +57,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_2">
      <property name="geometry">
@@ -81,6 +84,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_3">
@@ -107,6 +113,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_4">
      <property name="geometry">
@@ -131,6 +140,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_5">
@@ -157,6 +169,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_6">
      <property name="geometry">
@@ -181,6 +196,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_7">
@@ -207,6 +225,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_8">
      <property name="geometry">
@@ -231,6 +252,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_9">
@@ -257,6 +281,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_10">
      <property name="geometry">
@@ -281,6 +308,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_11">
@@ -307,6 +337,9 @@ border-color: rgb(255, 255, 255);</string>
      <property name="tickInterval">
       <number>8</number>
      </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QSlider" name="verticalSlider_a_12">
      <property name="geometry">
@@ -331,6 +364,9 @@ border-color: rgb(255, 255, 255);</string>
      </property>
      <property name="tickInterval">
       <number>8</number>
+     </property>
+     <property name="selected" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QLabel" name="label_a_1">
@@ -1090,7 +1126,7 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame_quickcontrols">
+   <widget class="QFrame" name="frame_channelproperties">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1105,7 +1141,7 @@ color: rgb(255, 255, 255);</string>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
-    <widget class="QGroupBox" name="groupBox_quickcontrols">
+    <widget class="QStackedWidget" name="stackedWidget_channelproperties">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1115,65 +1151,359 @@ color: rgb(255, 255, 255);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);</string>
+      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
      </property>
-     <property name="title">
-      <string>Quick Controls</string>
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <widget class="QPushButton" name="pushButton_qc_blackout">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>20</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Blackout&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 105, 105, 120);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>resources/light-bulb-off.png</normaloff>resources/light-bulb-off.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
+     <widget class="QWidget" name="page_noneselected">
+      <widget class="QFrame" name="frame_noneselected">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>471</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <widget class="QLabel" name="label_noneselected">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Select a channel first to edit</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
      </widget>
-     <widget class="QLabel" name="label_qc_blackout">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>20</y>
-        <width>51</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Agency FB</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgba(255, 255, 255, 0);
+     <widget class="QWidget" name="page_channeledit">
+      <widget class="QFrame" name="frame_channeledit">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>471</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <widget class="QPushButton" name="pushButton_lightcolor">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>141</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Click to change colour</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_ce_channelname">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>10</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);
 color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Blackout</string>
-      </property>
+        </property>
+        <property name="text">
+         <string>Channel Name</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_channelname">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="placeholderText">
+         <string>Default</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_ce_channelcol">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>40</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Channel Colour</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>141</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="maximum">
+         <number>127</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_ce_currentval">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>70</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Current Value</string>
+        </property>
+       </widget>
+       <widget class="QPlainTextEdit" name="plainTextEdit_notes">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>451</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="placeholderText">
+         <string>Enter notes here.</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_multiedit">
+      <widget class="QFrame" name="frame_multiedit">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>471</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <widget class="QLabel" name="label_noneselected_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string>Multi-Channel Edit Mode</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSlider" name="verticalSlider_multiedit">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>431</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
+        </property>
+        <property name="maximum">
+         <number>127</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TicksBothSides</enum>
+        </property>
+        <property name="tickInterval">
+         <number>8</number>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_fullup">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_fulldown">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>120</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_me_100">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>80</y>
+          <width>51</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set 100%</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_me_0">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>120</y>
+          <width>51</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set 0%</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -1464,7 +1794,7 @@ border-color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>200</y>
+       <y>150</y>
        <width>491</width>
        <height>131</height>
       </rect>
@@ -1617,7 +1947,8 @@ color: rgb(255, 255, 255);</string>
         <string>Next Step</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+        <string notr="true">background-color: rgba(15, 15, 20, 200);
+color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
         <string/>
@@ -1627,7 +1958,7 @@ color: rgb(255, 255, 255);</string>
          <normaloff>resources/arrow-step-back.png</normaloff>resources/arrow-step-back.png</iconset>
        </property>
        <property name="shortcut">
-        <string>Right</string>
+        <string>Left</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_sequencer_play">
@@ -1640,10 +1971,11 @@ color: rgb(255, 255, 255);</string>
         </rect>
        </property>
        <property name="toolTip">
-        <string>Play Sequence</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Play Sequence&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+        <string notr="true">background-color: rgba(15, 15, 20, 200);
+color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
         <string/>
@@ -1669,7 +2001,8 @@ color: rgb(255, 255, 255);</string>
         <string>Next Step</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+        <string notr="true">background-color: rgba(15, 15, 20, 200);
+color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
         <string/>
@@ -1695,7 +2028,8 @@ color: rgb(255, 255, 255);</string>
         <string>Loop Sequence</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgba(15, 15, 20, 200);</string>
+        <string notr="true">background-color: rgba(15, 15, 20, 200);
+color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
         <string/>
@@ -1703,9 +2037,6 @@ color: rgb(255, 255, 255);</string>
        <property name="icon">
         <iconset>
          <normaloff>resources/arrow-repeat.png</normaloff>resources/arrow-repeat.png</iconset>
-       </property>
-       <property name="shortcut">
-        <string>Right</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -1736,7 +2067,7 @@ color: rgb(255, 255, 255);</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>Duplicate Step</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Duplicate Step&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Shortcut: D&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string/>
@@ -1746,7 +2077,7 @@ color: rgb(255, 255, 255);</string>
        <normaloff>resources/document-copy.png</normaloff>resources/document-copy.png</iconset>
      </property>
      <property name="shortcut">
-      <string>A</string>
+      <string>D</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_moveStepLeft">
@@ -1768,9 +2099,6 @@ color: rgb(255, 255, 255);</string>
       <iconset>
        <normaloff>resources/arrow-skip-180.png</normaloff>resources/arrow-skip-180.png</iconset>
      </property>
-     <property name="shortcut">
-      <string>A</string>
-     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_moveStepRight">
      <property name="geometry">
@@ -1791,9 +2119,6 @@ color: rgb(255, 255, 255);</string>
       <iconset>
        <normaloff>resources/arrow-skip.png</normaloff>resources/arrow-skip.png</iconset>
      </property>
-     <property name="shortcut">
-      <string>A</string>
-     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_replaceStep">
      <property name="geometry">
@@ -1805,7 +2130,7 @@ color: rgb(255, 255, 255);</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Replace Step&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Replaces the settings on the step with the current settings.&lt;/p&gt;&lt;p&gt;Shortcut: Ctrl+A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Replace Step&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Replaces the settings on the step with the current settings.&lt;/p&gt;&lt;p&gt;Shortcut: Shift+A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string/>
@@ -1815,7 +2140,7 @@ color: rgb(255, 255, 255);</string>
        <normaloff>resources/arrow-step.png</normaloff>resources/arrow-step.png</iconset>
      </property>
      <property name="shortcut">
-      <string>Ctrl+A</string>
+      <string>Shift+A</string>
      </property>
     </widget>
     <widget class="Line" name="line_2">
@@ -1850,9 +2175,6 @@ color: rgb(255, 255, 255);</string>
       <iconset>
        <normaloff>resources/document-import.png</normaloff>resources/document-import.png</iconset>
      </property>
-     <property name="shortcut">
-      <string>A</string>
-     </property>
     </widget>
     <widget class="QPushButton" name="pushButton_exportSequence">
      <property name="geometry">
@@ -1873,15 +2195,12 @@ color: rgb(255, 255, 255);</string>
       <iconset>
        <normaloff>resources/document-export.png</normaloff>resources/document-export.png</iconset>
      </property>
-     <property name="shortcut">
-      <string>A</string>
-     </property>
     </widget>
     <widget class="QWidget" name="widget_information" native="true">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
+       <y>290</y>
        <width>491</width>
        <height>41</height>
       </rect>
@@ -2058,6 +2377,77 @@ color: rgb(255, 255, 255);</string>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
+    <widget class="QGroupBox" name="groupBox_quickcontrols">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>491</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="title">
+      <string>Quick Controls</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="pushButton_qc_blackout">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Blackout&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(255, 105, 105, 220);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/light-bulb-off.png</normaloff>resources/light-bulb-off.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_qc_blackout">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Agency FB</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Blackout</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QLabel" name="background">
     <property name="geometry">
@@ -2094,7 +2484,7 @@ border-color: rgb(255, 255, 255);</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_mididevice">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -2112,7 +2502,7 @@ alternate-background-color: rgb(30, 30, 40);
 color: rgb(255, 255, 255);</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_s_i_steps_3">
+    <widget class="QLabel" name="label_info_mididevice">
      <property name="geometry">
       <rect>
        <x>260</x>
@@ -2135,10 +2525,63 @@ color: rgb(255, 255, 255);</string>
       <string>MIDI Desk</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_exportChannel">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>5</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Export Channel Settings</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>resources/document-export.png</normaloff>resources/document-export.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_importChannel">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>5</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Import Channel Settings</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>resources/document-import.png</normaloff>resources/document-import.png</iconset>
+     </property>
+    </widget>
+    <widget class="Line" name="line_3">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>5</y>
+       <width>4</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
    </widget>
    <zorder>background</zorder>
    <zorder>frame_channels</zorder>
-   <zorder>frame_quickcontrols</zorder>
+   <zorder>frame_channelproperties</zorder>
    <zorder>frame_3</zorder>
    <zorder>frame_sequencer</zorder>
    <zorder>frame_main</zorder>
@@ -2153,8 +2596,31 @@ color: rgb(255, 255, 255);</string>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionHide_Background"/>
+   </widget>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Simple Mode</string>
+   </property>
+  </action>
+  <action name="actionHide_Background">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide Background</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
