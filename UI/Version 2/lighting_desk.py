@@ -9,6 +9,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QStyleFactory
 from worker import Worker
 
+import pyaudio
+import audioop
 from Ui_lighting_control import Ui_MainWindow
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -403,6 +405,42 @@ class Sequencer:
             UI.frame_multiedit.setDisabled(False)
             UI.spinBox.setDisabled(False)
 
+class SoundToLight:
+
+    def __init__(self):
+        self.audio_class = pyaudio.PyAudio()
+
+        self.chunk = 4096 #sample rate, higher = chunkier, slower       def: 2048
+        self.device = 2 #device from dev = p.get_device_info_by_index(device)   def: 2
+        self.scale = 50 #scale: < dimmer    > brighter                      def: 50
+        self.exponent = 1 #increases/decreases distance between loudness. lower means flatter change    def: 4
+
+        self.stream = self.audio_class.open(format = pyaudio.paInt16,
+                             channels=1,
+                             rate=44100,
+                             input=True,
+                             frames_per_buffer=self.chunk,
+                             input_device_index=self.device)
+
+        self.audio_worker = Worker(self.soundlight_thread)
+        #self.audio_worker.start()
+
+    def soundlight_thread(self):
+        time.sleep(10)
+        while True:
+            data  = self.stream.read(self.chunk)
+            rms   = audioop.rms(data, 2)
+
+            level = min(rms / (2.0 ** 16) * self.scale, 1.0)
+            level = level**self.exponent
+            level = int(level * 127)
+            if level > 127:
+                level = 127
+
+            UI.verticalSlider_a_2.setValue(127-level)
+            UI.verticalSlider_a_5.setValue(level)
+            time.sleep(0.01)
+
 
 class DeskIO:
 
@@ -458,6 +496,7 @@ class DeskIO:
 DESK = LightingDesk()
 CHANNEL = Channels()
 SEQUENCE = Sequencer()
+SNDTOLIGHT = SoundToLight()
 APP_IO = DeskIO(CHANNEL)
 
 UI.pushButton_moveStepLeft.clicked.connect(SEQUENCE.move_step_left)
