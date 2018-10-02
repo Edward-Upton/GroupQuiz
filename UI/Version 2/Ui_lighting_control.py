@@ -696,6 +696,7 @@ class Ui_MainWindow(object):
         self.doubleSpinBox_holdtime.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.doubleSpinBox_holdtime.setDecimals(1)
         self.doubleSpinBox_holdtime.setMinimum(0.0)
+        self.doubleSpinBox_holdtime.setValue(1)
         self.doubleSpinBox_holdtime.setObjectName("doubleSpinBox_holdtime")
         self.label_s_hold = QtWidgets.QLabel(self.widget)
         self.label_s_hold.setGeometry(QtCore.QRect(80, 40, 22, 22))
