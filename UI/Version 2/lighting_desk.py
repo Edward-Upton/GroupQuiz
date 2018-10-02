@@ -1,18 +1,23 @@
-import sys
 import json
-import mido
+import os
+import sys
+from math import floor
+
 import mido
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QStyleFactory
-from math import floor
+
 from Ui_lighting_control import Ui_MainWindow
 
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+
 APP = QApplication([])
-#APP.setStyle(QStyleFactory.create('GTK+'))
+ICON = QtGui.QIcon(SCRIPT_DIR+"\resources\light-bulb-off.png")
+APP.setWindowIcon(ICON)
 WINDOW = QMainWindow()
+WINDOW.setWindowTitle("Lighting Desk Software")
 UI = Ui_MainWindow()
 UI.setupUi(WINDOW)
-#WINDOW.setStyle(QStyleFactory.create('GTK+'))
 
 class LightingDesk:
 
@@ -21,8 +26,6 @@ class LightingDesk:
         self.ports += mido.get_output_names()
         self.outport = None
         self.updateDevices()
-
-
 
     def updateDevices(self):
         UI.comboBox_mididevice.clear()
@@ -73,7 +76,7 @@ class LightingDesk:
             msg = mido.Message("control_change", control=(slider_number+11), value=value, time=1)
         #print(str(msg))
         self.outport.send(msg)
-    
+
     def blackout(self, value):
         if value:
             for channel in range(0, 12):
@@ -117,7 +120,7 @@ class Channels:
             self.selected_channels.append(slider)
         else:
             self.selected_channels.pop(self.selected_channels.index(slider))
-        
+
         if len(self.selected_channels) > 1:
             UI.stackedWidget_channelproperties.setCurrentIndex(2)
             UI.verticalSlider_multiedit.setValue(self.selected_channels[-1].value())
@@ -126,24 +129,24 @@ class Channels:
             self.get_channel_properties(self.selected_channels[0])
         else:
             UI.stackedWidget_channelproperties.setCurrentIndex(0)
-    
+
     def get_channel_properties(self, channel_object):
         UI.lineEdit_channelname.setText(self.channel_info[channel_object]["name"])
         UI.pushButton_lightcolor.setStyleSheet("background-color: rgb%s;" % str(self.channel_info[channel_object]["color"]))
         UI.plainTextEdit_notes.setPlainText(self.channel_info[channel_object]["notes"])
         UI.spinBox.setValue(self.selected_channels[0].value())
-    
+
     def multi_slide(self, value):
         for slider in self.selected_channels:
             slider.setValue(value)
         UI.verticalSlider_multiedit.setValue(value)
-        
+
     def change_name(self, value):
         self.channel_info[self.selected_channels[0]]["name"] = value
-    
+
     def change_notes(self, value):
         self.channel_info[self.selected_channels[0]]["notes"] = value
-    
+
     def change_color(self):
         color = QtWidgets.QColorDialog.getColor()
         hex_color = color.name()[1:]
@@ -152,7 +155,7 @@ class Channels:
         UI.pushButton_lightcolor.setStyleSheet("background-color: rgb%s;" % str(self.channel_info[self.selected_channels[0]]["color"]))
     def change_value(self, value):
         self.selected_channels[0].setValue(value)
-    
+
     def slider_changed(self, slider):
         label_rgb = self.channel_info[slider]["color"]
         label_rgb_brightness = tuple(int((slider.value()/127)*x) for x in label_rgb)
@@ -160,15 +163,16 @@ class Channels:
         if self.selected_channels:
             if slider == self.selected_channels[0]:
                 UI.spinBox.setValue(slider.value())
-    
+
     def flash_press(self, slider):
         self.flash_previous_value = slider.value()
         slider.setValue(127)
-    
+
     def flash_release(self, slider):
         slider.setValue(self.flash_previous_value)
+
 class DeskIO:
-    
+
     def __init__(self, channel: Channels):
         self.file_filters = "ChannelExport File (*.chexp);;Channel Export JSON (*.json)"
         self.channels = channel
@@ -187,7 +191,7 @@ class DeskIO:
             json_data[key]["notes"] = self.channels.channel_info[index]["notes"]
         with open(name[0], 'w') as fp:
             json.dump(json_data, fp)
-    
+
     def import_channels(self):
         name = QtWidgets.QFileDialog.getOpenFileName(None, 'Open Channel Settings', '', self.file_filters)
         json_data = {}
@@ -204,7 +208,7 @@ class DeskIO:
             channel_data[getattr(UI, "verticalSlider_a_"+str(key+1))]["color"] = tuple(json_data[str(key)]["color"])
             channel_data[getattr(UI, "verticalSlider_a_"+str(key+1))]["label"] = getattr(UI, "label_a_"+str(key+1))
             channel_data[getattr(UI, "verticalSlider_a_"+str(key+1))]["notes"] = json_data[str(key)]["notes"]
-        
+
         self.channels.channel_info = channel_data
         if len(self.channels.selected_channels) == 1:
             self.channels.get_channel_properties(self.channels.selected_channels[0])
