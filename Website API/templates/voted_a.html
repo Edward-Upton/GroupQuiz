@@ -18,8 +18,14 @@
     <div class="alert alert-info">
         Pressing the button below will remove your vote. Only press it when the next question is ready.
     </div>
+    <p>
+        {{ votes_a }}
+    </p>
+    <p>
+        {{ votes_b }}
+    </p>
     <form method="POST" action="/unvote_a">
-        <button type="submit" style="margin: 15px" name="vote_redo" value="Revote" class="btn btn-success">Vote Again</button>
+        <button type="submit" style="margin: 15px; vertical-align: middle" name="vote_redo" value="Revote" class="btn btn-success">Vote Again</button>
     </form>
 </body>
 </html>

@@ -411,7 +411,7 @@ class SoundToLight:
         self.audio_class = pyaudio.PyAudio()
 
         self.chunk = 4096 #sample rate, higher = chunkier, slower       def: 2048
-        self.device = 2 #device from dev = p.get_device_info_by_index(device)   def: 2
+        self.device = 4 #device from dev = p.get_device_info_by_index(device)   def: 2
         self.scale = 50 #scale: < dimmer    > brighter                      def: 50
         self.exponent = 1 #increases/decreases distance between loudness. lower means flatter change    def: 4
 
@@ -433,12 +433,12 @@ class SoundToLight:
 
             level = min(rms / (2.0 ** 16) * self.scale, 1.0)
             level = level**self.exponent
-            level = int(level * 127)
+            level = int(level * 127) + 50
             if level > 127:
                 level = 127
 
-            UI.verticalSlider_a_2.setValue(127-level)
-            UI.verticalSlider_a_5.setValue(level)
+            UI.verticalSlider_a_1.setValue(127-level+50)
+            UI.verticalSlider_a_4.setValue(level)
             time.sleep(0.01)
 
 

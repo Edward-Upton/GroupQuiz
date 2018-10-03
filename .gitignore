@@ -2,3 +2,4 @@ UI/Version 2/__pycache__/
 UI/Version 1/__pycache__
 UI/__pycache__
 .vscode/launch.json
+*.pyc
