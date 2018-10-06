@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Charities Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href ="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+</head>
+<body>
+    <div class="alert alert-primary">
+        <strong style="font-size: 20px">Charities Day Vote System</strong>
+    </div>
+    <div class="alert alert-success">
+        You have successfully voted for {{ vote_option }}.
+    </div>
+    <div class="alert alert-info">
+        Pressing the button below will remove your vote. Only press it when the next question is ready.
+    </div>
+    <form method="POST" action="/unvote_a">
+        <button type="submit" style="margin: 15px" name="vote_redo" value="Revote" class="btn btn-success">Vote Again</button>
+    </form>
+    <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
+            <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong></div></p>
+</body>
+</html>
