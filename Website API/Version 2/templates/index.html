@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" media="screen" href ="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" media="screen" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
 </head>
+
 <body>
     <div class="alert alert-primary">
         <strong style="font-size: 20px">Charities Day Vote System</strong>
@@ -18,51 +20,54 @@
         <div style="text-align: center; font-size: 15px">To start, select your year group</div>
     </div>
     <form class="form-horizontal" method="post" action="/submitYear" style="width: 100%">
-            <div class="form-group">
-             <label class="control-label col-sm-2 requiredField" style="margin-left: 10px" for="selectYear">
-              Year
-              <span class="asteriskField">
-               *
-              </span>
-             </label>
-             <div class="col-sm-10">
-              <select class="select form-control" id="selectYear" name="selectYear" required>
-               <option selected="selected">
-               </option>
-               <option value="7">
-                7
-               </option>
-               <option value="8">
-                8
-               </option>
-               <option value="9">
-                9
-               </option>
-               <option value="10">
-                10
-               </option>
-               <option value="11">
-                11
-               </option>
-               <option value="12">
-                12
-               </option>
-               <option value="13">
-                13
-               </option>
-              </select>
-             </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2 requiredField" style="margin-left: 10px" for="selectYear">
+                Year
+                <span class="asteriskField">
+                    *
+                </span>
+            </label>
+            <div class="col-sm-10">
+                <select class="select form-control" id="selectYear" name="selectYear" style="width:100%" required>
+                    <option selected="selected">
+                    </option>
+                    <option value="7">
+                        7
+                    </option>
+                    <option value="8">
+                        8
+                    </option>
+                    <option value="9">
+                        9
+                    </option>
+                    <option value="10">
+                        10
+                    </option>
+                    <option value="11">
+                        11
+                    </option>
+                    <option value="12">
+                        12
+                    </option>
+                    <option value="13">
+                        13
+                    </option>
+                </select>
             </div>
-            <div class="form-group">
-             <div class="col-sm-10 col-sm-offset-2">
-              <button class="btn btn-success " name="submit" type="submit" style="width: 80%; margin-left: 10%; margin-right: 10%">
-               Submit
-              </button>
-             </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <button class="btn btn-success " name="submit" type="submit" style="width: 100%">
+                    Submit
+                </button>
             </div>
-           </form>
+        </div>
+    </form>
 
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong></div></p>
+        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong>
+    </div>
+    </p>
 </body>
+
 </html>

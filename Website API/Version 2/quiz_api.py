@@ -18,6 +18,18 @@ VOTES = {
 
 VOTING_READY = False
 
+@APP.route('/toggleVoting', methods=['GET'])
+def toggleVoting():
+    admin_user = request.args.get('username')
+    if admin_user != 'mitgobla':
+        return flask.redirect(flask.url_for('index'))
+    global VOTING_READY
+    if VOTING_READY:
+        VOTING_READY = False
+    else:
+        VOTING_READY = True
+    return "Voting Enabled: "+str(VOTING_READY)
+
 @APP.route('/voted', methods=['POST'])
 def voted():
     year = request.cookies.get('yearGroup')
@@ -36,9 +48,19 @@ def voted():
 @APP.route('/submitYear', methods=['POST'])
 def submitYear():
     """Submit Page"""
-    year = request.form['selectYear']
-    response = flask.make_response(flask.render_template('vote.html'))
+    if 'selectYear' in request.form:
+        year = request.form['selectYear']
+        voted = "N"
+    else:
+        year = request.cookies.get('yearGroup')
+        voted = request.cookies.get('voted')
+
+    if VOTING_READY:
+        response = flask.make_response(flask.render_template('vote.html'))
+    else:
+        response = flask.make_response(flask.render_template('vote_notready.html'))
     response.set_cookie('yearGroup', year)
+    response.set_cookie('voted', voted)
     return response
 
 @APP.route('/', methods=['GET', 'POST'])
