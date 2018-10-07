@@ -22,7 +22,7 @@
     <div class="alert alert-info">
         <div style="text-align: center; font-size: 15px">To start, select your year group</div>
     </div>
-    <form class="form-horizontal" method="post" action="/yearForm" style="width: 100%">
+    <form method="POST" action="/yearForm" style="width: 100%; margin-left: auto; margin-right: auto">
         <div class="form-group">
             <label class="control-label col-sm-2 requiredField" style="margin-left: 10px" for="selectYear">
                 Year
@@ -31,7 +31,7 @@
                 </span>
             </label>
             <div class="col-sm-10">
-                <select class="select form-control" id="selectYear" name="selectYear" style="width:100%" required>
+                <select class="select form-control" id="selectYear" name="selectYear" style="margin-left: 5%; margin-right: 5%; width: 90%; margin-bottom: 10px" required>
                     <option selected="selected">
                     </option>
                     <option value="7">
@@ -59,11 +59,9 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2">
-                <button class="btn btn-success " name="submit" type="submit" style="width: 100%">
+                <button class="btn btn-success " name="submit" type="submit" style="margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%; height: 40px">
                     Submit
                 </button>
-            </div>
         </div>
     </form>
 
@@ -73,7 +71,7 @@
     <div class="alert alert-primary" style="margin-top: 20px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
-    
+
 </body>
 
 </html>
