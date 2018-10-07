@@ -26,13 +26,30 @@ VOTING_READY = False # Need API to toggle voting
 @APP.route('/', methods=['GET', 'POST'])
 def index():
     """Home Page"""
-    password = request.args.get('password')
-    if password == 'test': # Definitely a super secure password
+    # password = request.args.get('password')
+    if 'adminUser' in request.cookies:
         # Return ADMIN control panel
-        return 
+        return
     else:
-        # Return getCode        
+        # Return getCode
         return flask.redirect(flask.url_for('getCode'))
+
+@APP.route('/admin', methods=['GET', 'POST'])
+def admin():
+    passwordFailed = request.args.get('passwordFailed')
+    if passwordFailed:
+        return flask.render_template("admin_login.html", passwordFailed=True)
+    else:
+        return flask.render_template("admin_login.html")
+
+@APP.route('/getAdmin', methods=['GET', 'POST'])
+def getAdmin():
+    inputted_password = request.form['passwordField']
+    if inputted_password != "test_password": # Super secure password, btw
+        return flask.redirect(flask.url_for('admin', passwordFailed=True))
+
+    return "SUCC" # Admin Panel
+
 
 def create_code():
     global code_list
@@ -65,7 +82,7 @@ def getYear():
         return flask.redirect(flask.url_for('panel'))
 
     return flask.render_template('yearForm.html', code=request.cookies.get('userCode'))
-        
+
 @APP.route('/yearForm', methods=['GET', 'POST'])
 def yearForm():
     if not 'userCode' in request.cookies:
@@ -76,19 +93,18 @@ def yearForm():
 
     year = request.form['selectYear']
 
-    response = flask.redirect(flask.url_for('panel'))    
+    response = flask.redirect(flask.url_for('panel'))
     response.set_cookie('userGroup', year)
-
     return response
 
 @APP.route('/panel', methods=['GET', 'POST'])
 def panel():
     if not 'userCode' in request.cookies:
         return flask.redirect(flask.url_for('getCode'))
-    
+
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
-    
+
     return "I LIKE TO HANG OUT WITH MY DOG"
 
 
