@@ -4,12 +4,16 @@ from numpy import random
 from flask import request, make_response
 import random
 import string
+import json
+import os
 
 DEBUG = True
 APP = flask.Flask(__name__)
 APP.config.from_object(__name__)
 
 code_list = list()
+
+CWD = os.path.dirname(os.path.realpath(__file__))
 
 VOTES = {
     "7": [0, 0],
@@ -20,6 +24,8 @@ VOTES = {
     "12": [0, 0],
     "13": [0, 0],
 }
+
+quizzes=["1", "2"]
 
 VOTING_READY = False # Need API to toggle voting
 
@@ -130,7 +136,53 @@ def home():
         return flask.redirect(flask.url_for('getYear'))
     
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
-                            year=request.cookies.get("userGroup"))
+                            year=request.cookies.get("userGroup"), quizzes=quizzes)
+
+@APP.route('/getQuiz', methods=['GET', 'POST'])
+def getQuiz():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    quiz = next(iter(request.form))
+    
+    response = flask.make_response(flask.redirect(flask.url_for('quizPage')))
+    response.set_cookie('currentQuiz', quiz)
+    response.set_cookie('questionNumber', '0')
+
+    return response
+    
+
+@APP.route('/quizPage', methods=['GET', 'POST'])
+def quizPage():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    currentQuiz = request.cookies.get('currentQuiz')
+    questionNumber = int(request.cookies.get('questionNumber'))
+    response = flask.make_response()
+
+    with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
+        quizzesDict = json.load(fp)
+    response.set_cookie('questionNumber')
+    question = quizzesDict["quizzes"][currentQuiz]["questions"]
+
+    questionsName = question[0]
+    questionChoices = question[1:]
+
+    response.set_cookie("questionNumber", str(questionNumber + 1))
+    response.render_template('quizPage.html', code=request.cookies.get("userCode"), group=request.cookies.get("userGroup"), questionName=questionsName, questionChoices=questionChoices)
+
+    return response
+
+        
+
+    
 
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port=80, debug=DEBUG)

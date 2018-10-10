@@ -20,20 +20,23 @@
     <div class="alert alert-success">
         <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
     </div>
+    <div class="alert alert-info">
+        <strong>QUIZ: {{ quizName }}</strong>
+    </div>
     <form method='POST' action='/getQuiz'>
-        {% for quiz in quizzes %}
-            <div>
-                <button class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}" name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
-            </div>
-        {% endfor %}
+        <div>
+            <strong>
+                -{{ questionName }}
+            </strong>
+        </div>
+        <div class="btn-group btn-group" data-toogle="buttons">
+            {{% for choice in questionChoices %}}
+            <label class="btn btn-secondary">
+                <input type='radio' name='{{ choice }}' value="{{ choice }}" autocomplete="off">
+            </label>
+            {{% endfor %}}
+        </div>
     </form>
-    <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong>
-    </div>
-    </p>
-    <div class="alert alert-primary" style="margin-top: 20px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
-    </div>
-</body>
 
-</html>
+
+</body>
