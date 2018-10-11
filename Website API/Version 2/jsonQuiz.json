@@ -10,9 +10,9 @@
             "name": "Embarrasing",
             "questions": [["When did Mr Ward have his first kiss","Yesterday","Today","Never"],["Whom'st teacher is Mrs Essex's worsetest teacher?","JP","Mrs Haf","Everyone"]],
             "answers": ["Never", "Yeet"],
-            "available": false
+            "available": true
         }
-        
+
     },
     "votes": {
         "1": {

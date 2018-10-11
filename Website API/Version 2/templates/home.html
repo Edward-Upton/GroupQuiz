@@ -14,25 +14,52 @@
 
 <body>
     <div class="alert alert-primary">
-        <img src="/static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
+        <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
 
+    {% set greeting = range(1, 6) | random %}
     <div class="alert alert-success">
-        <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
+        {% if greeting == 1 %}
+        <p>Hey you from year <strong>{{ year }}</strong>! Nice code btw: <strong>{{ code }}</strong></p>
+        {% elif greeting == 2 %}
+        <p>Hey <strong>{{ code }}</strong> from year <strong>{{ year }}</strong>!</p>
+        {% elif greeting == 3 %}
+        <p>Getting ready, <strong>{{ code }}</strong>? We know year <strong>{{ year }}</strong> is.</p>
+        {% elif greeting == 4 %}
+        <p>All aboard, <strong>{{ code }}</strong>! You're on the year <strong>{{ year }}</strong> train.</p>
+        {% elif greeting == 5 %}
+        <p>Hello there, <strong>{{ code }}</strong>! Year <strong>{{ year }}</strong> has the high ground.</p>
+        {% endif %}
+
     </div>
-    <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
-        {% for quiz in quizzes %}
-        <div>
-            <button style="margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%" class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}"
-                name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
-        </div>
-        {% endfor %}
-        {% if quizzes|length == 0 %}
+
+
+    <div class="container rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
+        <h4 style="text-align: center">Vote Events</h4>
+    </div>
+
+
+    <hr>
+
+
+    <div class="container rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
+        <h4 style="text-align: center">Quiz Events</h4>
+        <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
+            {% for quiz in quizzes %}
+            <div>
+                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}"
+                    name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
+            </div>
+            {% endfor %}
+            {% if quizzes|length == 0 %}
             <div style="width:100%">
                 <p style="text-align: center">There are no more quizzes available right now.</p>
             </div>
-        {% endif %}
-    </form>
+            {% endif %}
+        </form>
+    </div>
+
+
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
     </div>
