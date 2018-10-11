@@ -136,7 +136,8 @@ def getYear():
     if 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('home'))
 
-    return flask.render_template('yearForm.html', code=request.cookies.get('userCode'))
+    # return flask.render_template('yearForm.html', code=request.cookies.get('userCode'))
+    return flask.render_template('yearForm.html')
 
 
 @APP.route('/yearForm', methods=['GET', 'POST'])
