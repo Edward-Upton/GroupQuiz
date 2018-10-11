@@ -20,11 +20,12 @@
     <div class="alert alert-success">
         <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
     </div>
-    <form method='POST' action='/getQuiz'>
+    <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
         {% for quiz in quizzes %}
-            <div>
-                <button class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}" name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
-            </div>
+        <div>
+            <button style="margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%" class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}"
+                name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
+        </div>
         {% endfor %}
     </form>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
@@ -32,7 +33,8 @@
     </div>
     </p>
     <div class="alert alert-primary" style="margin-top: 20px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
+        <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit
+                Bandits</strong></p>
     </div>
 </body>
 
