@@ -6,14 +6,29 @@ import random
 import string
 import json
 import os
+from flaskext.mysql import MySQL
 
 DEBUG = True
 APP = flask.Flask(__name__)
 APP.config.from_object(__name__)
 
+mysql = MySQL()
+APP.config['MYSQL_DATABASE_USER'] = 'pyuser'
+APP.config['MYSQL_DATABASE_PASSWORD'] = 'pyuser'
+APP.config['MYSQL_DATABASE_DB'] = 'charities_day'
+APP.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(APP)
+
+conn = mysql.connect()
+
 code_list = list()
 
 CWD = os.path.dirname(os.path.realpath(__file__))
+
+with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
+    quizzesDict = json.load(fp)
+
+
 
 VOTES = {
     "7": [0, 0],
@@ -125,6 +140,8 @@ def yearForm():
 
     response = flask.redirect(flask.url_for('home'))
     response.set_cookie('userGroup', year)
+    userQuizData = {"quizzesAnswered":[]}
+    response.set_cookie('userQuizData', str(json.dumps(userQuizData)))
     return response
 
 @APP.route('/home', methods=['GET', 'POST'])
@@ -135,6 +152,18 @@ def home():
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
     
+    quizzes = list()
+    userQuizData = json.loads(request.cookies.get("userQuizData"))
+    userQuizzesAnswered = userQuizData["quizzesAnswered"]
+
+    for quiz in quizzesDict["quizzes"]:
+        if quizzesDict["quizzes"][quiz]["available"]:
+            if not quiz in userQuizzesAnswered:
+                quizzes.append(quizzesDict["quizzes"][quiz]["name"])
+
+    #if request.cookies.get("quizData"):
+        
+
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
                             year=request.cookies.get("userGroup"), quizzes=quizzes)
 
@@ -165,22 +194,69 @@ def quizPage():
 
     currentQuiz = request.cookies.get('currentQuiz')
     questionNumber = int(request.cookies.get('questionNumber'))
-    response = flask.make_response()
 
-    with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
-        quizzesDict = json.load(fp)
-    response.set_cookie('questionNumber')
-    question = quizzesDict["quizzes"][currentQuiz]["questions"]
+    global quizzesDict
 
-    questionsName = question[0]
-    questionChoices = question[1:]
+    quizDict = quizzesDict["quizzes"][currentQuiz]
 
-    response.set_cookie("questionNumber", str(questionNumber + 1))
-    response.render_template('quizPage.html', code=request.cookies.get("userCode"), group=request.cookies.get("userGroup"), questionName=questionsName, questionChoices=questionChoices)
+    if questionNumber >= len(quizDict["questions"]):
+        response = flask.make_response(flask.render_template("quizFinished.html",
+                                                                code = request.cookies.get("userCode"),
+                                                                year=request.cookies.get("userGroup"),
+                                                                quizName=currentQuiz))
+        
+        quizData = json.loads(request.cookies.get("userQuizData"))
+        
+        quizData["quizzesAnswered"].append(currentQuiz)
+        response.set_cookie("userQuizData", str(json.dumps(quizData)))
+
+    elif questionNumber < len(quizDict["questions"]):
+        questionList = quizDict["questions"][questionNumber]
+        questionName = questionList[0]
+        questionChoices = questionList[1:]
+
+        response = flask.make_response(flask.render_template("quizPage.html", quizName=currentQuiz,
+                                                                questionName=questionName, questionChoices=questionChoices,
+                                                                code = request.cookies.get("userCode"),
+                                                                year = request.cookies.get("userGroup")))
+        #response.set_cookie("questionNumber", str(questionNumber + 1))
+    
+    else:
+        response = flask.make_response(flask.redirect(flask.url_for("/home")))
 
     return response
 
-        
+@APP.route('/getAnswer', methods=['GET', 'POST'])
+def getAnswer():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    userCode = request.cookies.get("userCode")
+    userGroup = request.cookies.get("userGroup")
+    currentQuiz = request.cookies.get("currentQuiz")
+    questionNumber = request.cookies.get("questionNumber")
+    
+    global quizzesDict
+
+    answer = request.args.get("answer")
+    correctAnswer = quizzesDict["quizzes"][currentQuiz]["answers"][int(questionNumber)]
+    if answer == correctAnswer:
+        isCorrect = "y"
+    else:
+        isCorrect = "n"
+
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO `charities_day`.`quiz-answers` (`userCode`, `userGroup`, `quizName`, `quizQuestion`, `questionAnswer`, `isCorrect`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (userCode, userGroup, currentQuiz, questionNumber, answer, isCorrect))
+    conn.commit()
+    
+    response = flask.make_response(flask.redirect(flask.url_for("quizPage")))
+    response.set_cookie("questionNumber", str(int(questionNumber) + 1))
+
+    return response
 
     
 

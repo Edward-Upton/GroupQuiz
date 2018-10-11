@@ -1,15 +1,24 @@
 {
     "quizzes": {
-        "1": {
+        "Embarrasing Question": {
             "name": "Embarrasing Question",
             "questions": [["When did Mr Ward have his first kiss","Yesterday","Today","Never"],["Whom'st teacher is Mrs Essex's worsetest teacher?","JP","Mrs Haf","Everyone"]],
-            "answers": ["Never", "Yeet"]
+            "answers": ["Never", "Yeet"],
+            "available": true
+        },
+        "Embarrasing": {
+            "name": "Embarrasing",
+            "questions": [["When did Mr Ward have his first kiss","Yesterday","Today","Never"],["Whom'st teacher is Mrs Essex's worsetest teacher?","JP","Mrs Haf","Everyone"]],
+            "answers": ["Never", "Yeet"],
+            "available": false
         }
+        
     },
     "votes": {
         "1": {
             "name": "Emlyn's Got Talent",
-            "questions": ["1st Act", "2nd Act"]
+            "questions": ["1st Act", "2nd Act"],
+            "available": true
         }
     }
 }

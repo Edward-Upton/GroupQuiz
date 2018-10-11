@@ -20,26 +20,14 @@
     <div class="alert alert-success">
         <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
     </div>
+
     <div class="alert alert-info">
-        <strong>QUIZ: {{ quizName }}</strong>
+        <strong> You have finished "{{ quizName }}" quiz.</strong>        
     </div>
-    <form name="question" action="/getAnswer">
-        <p>{{ questionName }}</p>
-        {% for choice in questionChoices %}
-        <div>
-            
-            <input type='radio' name='answer' id="{{ choice }}" value="{{ choice }}" autocomplete="off">
-            <label for="{{ choice }}">
-                {{ choice }}
-            </label>
-            
+
+    <a href="/home">
+        <div class="btn btn-success">
+            Return to Home
         </div>
-        {% endfor %}
-        </fieldset>
-        <script type="text/javascript">
-           var wait=setTimeout("document.question.submit();",5000);
-        </script>
-    </form>
-
-
+    </a>
 </body>
