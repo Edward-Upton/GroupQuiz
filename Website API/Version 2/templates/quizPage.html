@@ -14,32 +14,54 @@
 
 <body>
     <div class="alert alert-primary">
-        <img src="/static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
+        <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
 
-    <div class="alert alert-success">
+    <!-- <div class="alert alert-success">
         <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
-    </div>
+    </div> -->
     <div class="alert alert-info">
         <strong>QUIZ: {{ quizName }}</strong>
     </div>
-    <form name="question" action="/getAnswer">
-        <p>{{ questionName }}</p>
-        {% for choice in questionChoices %}
-        <div>
-            
-            <input type='radio' name='answer' id="{{ choice }}" value="{{ choice }}" autocomplete="off">
-            <label for="{{ choice }}">
-                {{ choice }}
-            </label>
-            
-        </div>
-        {% endfor %}
-        </fieldset>
-        <script type="text/javascript">
-           var wait=setTimeout("document.question.submit();",5000);
-        </script>
-    </form>
+    <div class="progress" style="width:80%; margin-right: 10%; margin-left:10%">
+        <div id="countdownBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+    </div>
+    <script>
+        function move(countdownTime) {
+          var elem = document.getElementById("countdownBar");
+          var width = 100;
+          var id = setInterval(frame, (countdownTime*10));
+          function frame() {
+            if (width <= 1) {
+              clearInterval(id);
+            } else {
+              width--;
+              elem.style.width = width + '%';
+            }
+          }
+        }
+        // move({{ countdownTime|safe }})
+        move(5)
+    </script>
+    <div class="alert alert-warning">
+        <h4 class="alert-heading">{{ questionName }}</h4>
+        <hr>
+        <form name="question" action="/getAnswer">
+            {% for choice in questionChoices %}
+            <div>
+
+                <input type='radio' name='answer' id="{{ choice }}" value="{{ choice }}" autocomplete="off">
+                <label for="{{ choice }}">
+                    {{ choice }}
+                </label>
+            </div>
+            {% endfor %}
+            </fieldset>
+            <script type="text/javascript">
+           var wait=setTimeout("document.question.submit();",5500);
+            </script>
+        </form>
+    </div>
 
 
 </body>
