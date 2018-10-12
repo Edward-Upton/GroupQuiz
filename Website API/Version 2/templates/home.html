@@ -17,10 +17,10 @@
         <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
 
-    {% set greeting = range(1, 6) | random %}
+    {% set greeting = range(1, 7) | random %}
     <div class="alert alert-success">
         {% if greeting == 1 %}
-        <p>Hey you from year <strong>{{ year }}</strong>! Nice code btw: <strong>{{ code }}</strong></p>
+        <p><strong>{{ code }}</strong>: Cheat code activated. Entering secret level <strong>{{ year }}</strong></p>
         {% elif greeting == 2 %}
         <p>Hey <strong>{{ code }}</strong> from year <strong>{{ year }}</strong>!</p>
         {% elif greeting == 3 %}
@@ -28,14 +28,19 @@
         {% elif greeting == 4 %}
         <p>All aboard, <strong>{{ code }}</strong>! You're on the year <strong>{{ year }}</strong> train.</p>
         {% elif greeting == 5 %}
-        <p>Hello there, <strong>{{ code }}</strong>! Year <strong>{{ year }}</strong> has the high ground.</p>
+        <p>Hello there, <strong>{{ code }}</strong>. Year <strong>{{ year }}</strong> has the high ground.</p>
+        {% elif greeting == 6 %}
+        <p>Ground control to year <strong>{{ year }}</strong>. <strong>{{ code }}</strong> has just landed.</p>
+        {% elif greeting == 7 %}
+        <p>Brace yourselves year <strong>{{ year }}</strong>, <strong>{{ code }}</strong> has just arrived.</p>
         {% endif %}
 
     </div>
 
 
-    <div class="container rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
+    <div class="container rounded" style="padding: 10px; background-color: rgb(214, 236, 214); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Vote Events</h4>
+        <p style="text-align: center">Have your say about on-stage events!</p>
     </div>
 
 
@@ -44,6 +49,7 @@
 
     <div class="container rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Quiz Events</h4>
+        <p style="text-align: center">Answer questions with limited time!</p>
         <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
             {% for quiz in quizzes %}
             <div>
