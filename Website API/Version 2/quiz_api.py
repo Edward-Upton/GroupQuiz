@@ -170,7 +170,10 @@ def home():
         return flask.redirect(flask.url_for('getYear'))
 
     quizzes = list()
-    userQuizData = json.loads(request.cookies.get("userQuizData"))
+    if isinstance(request.cookies.get("userQuizData"), str):
+        userQuizData = json.loads(request.cookies.get("userQuizData"))
+    else:
+        userQuizData = {"quizzesAnswered": []}
     userQuizzesAnswered = userQuizData["quizzesAnswered"]
 
     for quiz in quizzesDict["quizzes"]:
