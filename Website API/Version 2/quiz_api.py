@@ -70,6 +70,22 @@ def admin():
 
     return flask.render_template("adminLogin.html")
 
+@APP.route('/getAdmin', methods=['GET', 'POST'])
+def getAdmin():
+    inputted_password = request.form['passwordField']
+    if inputted_password != "test_password":  # Super secure password, btw
+        return flask.redirect(flask.url_for('admin', passwordFailed=True))
+    response = flask.make_response(flask.redirect(flask.url_for('adminPanel')))
+    response.set_cookie('userAdmin', '1')
+    return response
+
+@APP.route('/adminPanel', methods=['GET', 'POST'])
+def adminPanel():
+    if not 'userAdmin' in request.cookies:
+        return flask.redirect(flask.url_for('admin', notLoggedIn=True))
+
+    return flask.render_template("adminPanel.html", userCount=str(len(code_list)))
+
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
@@ -82,34 +98,22 @@ def normalUser():
 
     return flask.redirect(flask.url_for('getCode'))
 
-
-@APP.route('/getAdmin', methods=['GET', 'POST'])
-def getAdmin():
-    inputted_password = request.form['passwordField']
-    if inputted_password != "test_password":  # Super secure password, btw
-        return flask.redirect(flask.url_for('admin', passwordFailed=True))
-    response = flask.make_response(flask.redirect(flask.url_for('adminPanel')))
-    response.set_cookie('userAdmin', '1')
-    return response
-
-
-@APP.route('/adminPanel', methods=['GET', 'POST'])
-def adminPanel():
-    if not 'userAdmin' in request.cookies:
-        return flask.redirect(flask.url_for('admin', notLoggedIn=True))
-
-    return flask.render_template("adminPanel.html", userCount=str(len(code_list)))
-
-
 def create_code():
     global code_list
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    with open(os.path.join(CWD, "names.txt")) as fp:
+        listNames = fp.readlines()
+
+    with open(os.path.join(CWD, "adjectives.txt")) as fp:
+        listAdjectives = fp.readlines()
+
+    code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize() + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
+    #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
     while code in code_list:
-        code = ''.join(random.choices(
-            string.ascii_uppercase + string.digits, k=4))
+        # code = ''.join(random.choices(
+        #     string.ascii_uppercase + string.digits, k=4))
+        listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize() + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
     code_list.append(code)
     return code
-
 
 @APP.route('/getCode', methods=['GET', 'POST'])
 def getCode():
