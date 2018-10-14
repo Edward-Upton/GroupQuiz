@@ -17,24 +17,28 @@
         <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
 
-    {% set greeting = range(1, 9) | random %}
+    {% set greeting = range(1, 11) | random %}
     <div class="alert alert-success" style="text-align: center; font-size: 18px">
         {% if greeting == 1 %}
-        <p><strong>{{ code }}</strong>: Cheat code activated. Entering secret level <strong>{{ year }}</strong></p>
+        <p><strong>{{ code }}</strong>: Cheat code activated. Entering secret level...</p>
         {% elif greeting == 2 %}
-        <p>Hey <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong>!</p>
+        <p>Hey <strong>{{ code }}</strong>!</p>
         {% elif greeting == 3 %}
         <p>Getting ready, <strong>{{ code }}</strong>? We know Year <strong>{{ year }}</strong> is.</p>
         {% elif greeting == 4 %}
         <p>All aboard, <strong>{{ code }}</strong>! You're on the Year <strong>{{ year }}</strong> train.</p>
         {% elif greeting == 5 %}
-        <p>Hello there, <strong>{{ code }}</strong>. Year <strong>{{ year }}</strong> has the high ground.</p>
+        <p>Hello there, Year <strong>{{ year }}</strong>. <strong>{{ code }}</strong> has the high ground.</p>
         {% elif greeting == 6 %}
         <p>Ground control to Year <strong>{{ year }}</strong>. <strong>{{ code }}</strong> has just landed.</p>
         {% elif greeting == 7 %}
-        <p>Brace yourselves Year <strong>{{ year }}</strong>, <strong>{{ code }}</strong> has just arrived.</p>
+        <p>Brace yourselves. <strong>{{ code }}</strong> has entered Year <strong>{{ year }}</strong></p>
         {% elif greeting == 8 %}
         <p>Alexa, play <strong>{{ code }}</strong> by Year <strong>{{ year }}</strong>.</p>
+        {% elif greeting == 9 %}
+        <p>Challenger Approaching - <strong>{{ code }}</strong> has appeared!</p>
+        {% elif greeting == 10 %}
+        <p>It's a bird. It's a plane. No, it's <strong>{{ code }}</strong></p>
         {% endif %}
 
     </div>
