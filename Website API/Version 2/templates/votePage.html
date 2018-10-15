@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Charities Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href ="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+</head>
+<body>
+    <div class="alert alert-primary">
+        <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
+    </div>
+
+    <!-- <div class="alert alert-success">
+        <p>Here is your code <strong>{{ code }}</strong> from Year <strong>{{ year }}</strong></p>
+    </div> -->
+    <div class="alert alert-info">
+        <strong>{{ voteName }} Vote</strong>
+    </div>
+
+    <div class="alert alert-success">
+        <h4 class="alert-heading"><strong>{{ code }}</strong>, {{ voteDescription }}</h4>
+        <hr>
+        <form name="voteform" action="/getVoteAnswer">
+            {% for choice in voteOptions %}
+            <div>
+
+                <input type='radio' name='answer' id="{{ choice }}" value="{{ choice }}" autocomplete="off">
+                <label for="{{ choice }}">
+                    {{ choice }}
+                </label>
+            </div>
+            {% endfor %}
+            <div style="margin-top: 10px">
+                <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+            </div>
+            <script type="text/javascript">
+                var wait = setTimeout("document.question.submit();", 30500);
+            </script>
+        </form>
+    </div>
+</body>
+</html>

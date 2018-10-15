@@ -47,6 +47,19 @@
     <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Vote Events</h4>
         <p style="text-align: center">Have your say about on-stage events!</p>
+        <form method="POST", action="/getVote", style="width: 100%, margin-left: auto; margin-right: auto">
+            {% for vote in votes %}
+            <div>
+                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}"
+                    name='{{ vote }}' type='submit' value='{{ vote }}'>{{ vote }}</button>
+            </div>
+            {% endfor %}
+            {% if votes|length == 0 %}
+            <div style="width:100%">
+                <p style="text-align: center">There are no votes running right now.</p>
+            </div>
+            {% endif %}
+        </form>
     </div>
 
 

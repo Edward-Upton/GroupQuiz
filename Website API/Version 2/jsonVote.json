@@ -1,0 +1,10 @@
+{
+    "votes": {
+        "On Stage": {
+            "name": "On Stage",
+            "description": "Vote for your favourite stage act!",
+            "options": ["Vote Act 1", "Vote Act 2"],
+            "available": true
+        }
+    }
+}

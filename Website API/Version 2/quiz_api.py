@@ -16,7 +16,7 @@ mysql = MySQL()
 APP.config['MYSQL_DATABASE_USER'] = 'pyuser'
 APP.config['MYSQL_DATABASE_PASSWORD'] = 'pyuser'
 APP.config['MYSQL_DATABASE_DB'] = 'charities_day'
-APP.config['MYSQL_DATABASE_HOST'] = 'localhost'
+APP.config['MYSQL_DATABASE_HOST'] = '10.6.253.128'
 mysql.init_app(APP)
 
 conn = mysql.connect()
@@ -27,6 +27,9 @@ CWD = os.path.dirname(os.path.realpath(__file__))
 
 with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
     quizzesDict = json.load(fp)
+
+with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
+    votesDict = json.load(fp)
 
 
 VOTES = {
@@ -41,7 +44,7 @@ VOTES = {
 
 quizzes = ["1", "2"]
 
-VOTING_READY = False  # Need API to toggle voting
+VOTING_READY = True  # Need API to toggle voting
 
 
 @APP.route('/', methods=['GET', 'POST'])
@@ -70,6 +73,7 @@ def admin():
 
     return flask.render_template("adminLogin.html")
 
+
 @APP.route('/getAdmin', methods=['GET', 'POST'])
 def getAdmin():
     inputted_password = request.form['passwordField']
@@ -78,6 +82,7 @@ def getAdmin():
     response = flask.make_response(flask.redirect(flask.url_for('adminPanel')))
     response.set_cookie('userAdmin', '1')
     return response
+
 
 @APP.route('/adminPanel', methods=['GET', 'POST'])
 def adminPanel():
@@ -98,6 +103,7 @@ def normalUser():
 
     return flask.redirect(flask.url_for('getCode'))
 
+
 def create_code():
     global code_list
     with open(os.path.join(CWD, "names.txt")) as fp:
@@ -106,14 +112,17 @@ def create_code():
     with open(os.path.join(CWD, "adjectives.txt")) as fp:
         listAdjectives = fp.readlines()
 
-    code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize() + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
+    code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
+    ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
     #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
     while code in code_list:
         # code = ''.join(random.choices(
         #     string.ascii_uppercase + string.digits, k=4))
-        listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize() + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
+        listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
+        ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
     code_list.append(code)
     return code
+
 
 @APP.route('/getCode', methods=['GET', 'POST'])
 def getCode():
@@ -157,7 +166,9 @@ def yearForm():
     response = flask.redirect(flask.url_for('home'))
     response.set_cookie('userGroup', year)
     userQuizData = {"quizzesAnswered": []}
+    userVoteData = {"votesAnswered": []}
     response.set_cookie('userQuizData', str(json.dumps(userQuizData)))
+    response.set_cookie('userVoteData', str(json.dumps(userVoteData)))
     return response
 
 
@@ -170,21 +181,111 @@ def home():
         return flask.redirect(flask.url_for('getYear'))
 
     quizzes = list()
+    votes = list()
     if isinstance(request.cookies.get("userQuizData"), str):
         userQuizData = json.loads(request.cookies.get("userQuizData"))
     else:
         userQuizData = {"quizzesAnswered": []}
+    
+    if isinstance(request.cookies.get("userVoteData"), str):
+        userVoteData = json.loads(request.cookies.get("userVoteData"))
+    else:
+        userVoteData = {"votesAnswered": []}
     userQuizzesAnswered = userQuizData["quizzesAnswered"]
+    userVotesAnswered = userVoteData["votesAnswered"]
 
     for quiz in quizzesDict["quizzes"]:
         if quizzesDict["quizzes"][quiz]["available"]:
             if not quiz in userQuizzesAnswered:
                 quizzes.append(quizzesDict["quizzes"][quiz]["name"])
+    
+    for vote in votesDict["votes"]:
+        if votesDict["votes"][vote]["available"]:
+            if not vote in userVotesAnswered:
+                votes.append(votesDict["votes"][vote]["name"])
 
     # if request.cookies.get("quizData"):
 
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
-                                 year=request.cookies.get("userGroup"), quizzes=quizzes)
+                                 year=request.cookies.get("userGroup"), quizzes=quizzes, votes=votes)
+
+
+@APP.route('/getVote', methods=['GET', 'POST'])
+def getVote():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    vote = next(iter(request.form))  # Converts dict into iterable
+
+    response = flask.make_response(flask.redirect(flask.url_for("votePage")))
+    response.set_cookie('currentVote', vote)
+
+    return response
+
+
+@APP.route('/votePage', methods=['GET', 'POST'])
+def votePage():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    currentVote = request.cookies.get('currentVote')
+
+    global votesDict
+
+    voteDict = votesDict["votes"][currentVote]
+
+    if VOTING_READY:
+        voteDescription = voteDict["description"]
+        voteOptions = voteDict["options"]
+
+        response = flask.make_response(flask.render_template("votePage.html",
+                                                             code=request.cookies.get("userCode"), 
+                                                             year=request.cookies.get("userGroup"), 
+                                                             voteName=currentVote,
+                                                             voteDescription=voteDescription,
+                                                             voteOptions=voteOptions))
+    else:
+        response = flask.make_response(flask.redirect(flask.url_for("voteNotReady")))
+
+    return response
+
+@APP.route('/getVoteAnswer', methods=['GET', 'POST'])
+def getVoteAnswer():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+    
+    userCode = request.cookies.get("userCode")
+    userGroup = request.cookies.get("userGroup")
+    currentVote = request.cookies.get("currentVote")
+
+    answer = request.args.get("answer")
+    if not answer:
+        answer = "NaN"
+    
+    # cursor = conn.cursor()
+    # cursor.execute("INSERT INTO `charities_day`.`vote-answers` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
+    #                (userCode, userGroup, currentVote, answer))
+    # conn.commit()
+
+    response = flask.make_response(flask.render_template("voteFinished.html",
+                                                         code=userCode,
+                                                         year=userGroup,
+                                                         vote_option=answer,
+                                                         voteName=currentVote))
+    voteData = json.loads(request.cookies.get("userVoteData"))
+    voteData["votesAnswered"].append(currentVote)
+    response.set_cookie("userVoteData", str(json.dumps(voteData)))
+    return response
+
 
 
 @APP.route('/getQuiz', methods=['GET', 'POST'])

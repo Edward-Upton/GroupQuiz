@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" media="screen" href="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" media="screen" href ="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href ="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
 </head>
-
 <body>
     <div class="alert alert-primary">
         <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
-
     <div class="container" style="padding: 20px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
     <div class="alert alert-info">
-        <strong>{{ quizName }}</strong>: Your answers have been counted.
+        <strong>{{ voteName }}</strong>: Your vote has been counted.
     </div>
     <div class="alert alert-success">
-        <strong>{{ code }}</strong>, you can return back to your home panel.
+        <strong>{{ code }}</strong>, you have successfully voted for <strong>{{ vote_option }}</strong>.
     </div>
-
     <a href="/home">
         <div class="btn btn-success" style="width: 100%">
             Return to Home
         </div>
     </a>
-    </div>
+</div>
 </body>
+</html>
