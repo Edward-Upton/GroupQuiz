@@ -5,28 +5,29 @@ Authors:
     Edward Upton (engiego)
 """
 
-import flask
-#from numpy import random
-#from flaskext.mysql import MySQL
-from flask import request #, make_response
-import random
 #import string
 import json
 import os
+import random
+
+import flask
+#from numpy import random
+#from flaskext.mysql import MySQL
+from flask import request  # , make_response
 from flaskext.mysql import MySQL
 
 DEBUG = True
 APP = flask.Flask(__name__)
 APP.config.from_object(__name__)
 
-mysql = MySQL()
+MYSQL = MySQL()
 APP.config['MYSQL_DATABASE_USER'] = 'pyuser'
 APP.config['MYSQL_DATABASE_PASSWORD'] = 'pyuser'
 APP.config['MYSQL_DATABASE_DB'] = 'charities_day'
 APP.config['MYSQL_DATABASE_HOST'] = '10.6.253.128'
-mysql.init_app(APP)
+MYSQL.init_app(APP)
 
-conn = mysql.connect()
+CONN = MYSQL.connect()
 
 code_list = list()
 
@@ -264,10 +265,10 @@ def getVoteAnswer():
     if not answer:
         answer = "NaN"
     
-    # cursor = conn.cursor()
+    # cursor = CONN.cursor()
     # cursor.execute("INSERT INTO `charities_day`.`vote-answers` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
     #                (userCode, userGroup, currentVote, answer))
-    # conn.commit()
+    # CONN.commit()
 
     response = flask.make_response(flask.render_template("voteFinished.html",
                                                          code=userCode,
@@ -367,11 +368,11 @@ def getAnswer():
     else:
         isCorrect = "n"
 
-    cursor = conn.cursor()
+    cursor = CONN.cursor()
 
     cursor.execute("INSERT INTO `charities_day`.`quiz-answers` (`userCode`, `userGroup`, `quizName`, `quizQuestion`, `questionAnswer`, `isCorrect`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" %
                    (userCode, userGroup, currentQuiz, questionNumber, answer, isCorrect))
-    conn.commit()
+    CONN.commit()
 
     response = flask.make_response(flask.redirect(flask.url_for("quizPage")))
     response.set_cookie("questionNumber", str(int(questionNumber) + 1))
@@ -383,4 +384,4 @@ if __name__ == "__main__":
     try:
         APP.run(host="0.0.0.0", port=80, debug=DEBUG)
     finally:
-        conn.close()
+        CONN.close()
