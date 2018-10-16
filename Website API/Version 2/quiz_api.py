@@ -201,7 +201,7 @@ def home():
     # if request.cookies.get("quizData"):
 
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
-                                 year=request.cookies.get("userGroup"), quizzes=quizzes, votes=votes)
+                                 year=request.cookies.get("userGroup"), quizzes=quizzes, votes=votes, votesEntered=str(len(userVotesAnswered)), quizzesEntered=str(len(userQuizzesAnswered)))
 
 
 @APP.route('/getVote', methods=['GET', 'POST'])

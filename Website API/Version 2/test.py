@@ -1,17 +1,8 @@
-import json
+import colorama
+colorama.init(autoreset=True)
 
-data = {
-    "quizzes": {
-        "1": {
-            "name": "Embarrasing Question",
-            "questions": ["When did Mr Ward have his first kiss", "Whom'st teacher is Mrs Essex's worsetest teacher?"],
-            "answers": ["Never", "Yeet"]
-        },
-    },
-    "votes": {
-        "1": {
-            "name": "Emlyn's Got Talent",
-            "questions": ["1st Act", "2nd Act"]
-        },
-    }
-}
+print(colorama.Fore.RED+"Error")
+print(colorama.Fore.YELLOW+"Warning")
+print(colorama.Fore.LIGHTBLUE_EX+"Debug")
+print(colorama.Fore.LIGHTGREEN_EX+"Success")
+print("Normal Output")
