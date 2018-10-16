@@ -1,23 +1,15 @@
 {
     "quizzes": {
-        "Embarrasing Question": {
-            "name": "Embarrasing Question",
-            "questions": [["When did Mr Ward have his first kiss","Yesterday","Today","Never"],["Whom'st teacher is Mrs Essex's worsetest teacher?","JP","Mrs Haf","Everyone"]],
-            "answers": ["Never", "Yeet"],
+        "Example Quiz 1": {
+            "name": "Example Quiz 1",
+            "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
+            "answers": ["A", "B", "C"],
             "available": true
         },
-        "Embarrasing": {
-            "name": "Embarrasing",
-            "questions": [["When did Mr Ward have his first kiss","Yesterday","Today","Never"],["Whom'st teacher is Mrs Essex's worsetest teacher?","JP","Mrs Haf","Everyone"]],
-            "answers": ["Never", "Yeet"],
-            "available": true
-        }
-
-    },
-    "votes": {
-        "1": {
-            "name": "Emlyn's Got Talent",
-            "questions": ["1st Act", "2nd Act"],
+        "Example Quiz 2": {
+            "name": "Example Quiz 2",
+            "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
+            "answers": ["A", "B", "C"],
             "available": true
         }
     }
