@@ -1,9 +1,16 @@
+"""Charities Day Quiz Website Application
+
+Authors:
+    Ben Dodd (mitgobla)
+    Edward Upton (engiego)
+"""
+
 import flask
-from numpy import random
+#from numpy import random
 #from flaskext.mysql import MySQL
-from flask import request, make_response
+from flask import request #, make_response
 import random
-import string
+#import string
 import json
 import os
 from flaskext.mysql import MySQL
@@ -31,21 +38,7 @@ with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
 with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
     votesDict = json.load(fp)
 
-
-VOTES = {
-    "7": [0, 0],
-    "8": [0, 0],
-    "9": [0, 0],
-    "10": [0, 0],
-    "11": [0, 0],
-    "12": [0, 0],
-    "13": [0, 0],
-}
-
-quizzes = ["1", "2"]
-
 VOTING_READY = True  # Need API to toggle voting
-
 
 @APP.route('/', methods=['GET', 'POST'])
 def index():
@@ -91,7 +84,6 @@ def adminPanel():
 
     return flask.render_template("adminPanel.html", userCount=str(len(code_list)))
 
-
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
     global code_list
@@ -118,10 +110,11 @@ def create_code():
     while code in code_list:
         # code = ''.join(random.choices(
         #     string.ascii_uppercase + string.digits, k=4))
-        listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
+        code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
         ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
     code_list.append(code)
     return code
+
 
 
 @APP.route('/getCode', methods=['GET', 'POST'])
