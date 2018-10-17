@@ -24,7 +24,7 @@ MYSQL = MySQL()
 APP.config['MYSQL_DATABASE_USER'] = 'pyuser'
 APP.config['MYSQL_DATABASE_PASSWORD'] = 'pyuser'
 APP.config['MYSQL_DATABASE_DB'] = 'charities_day'
-APP.config['MYSQL_DATABASE_HOST'] = '10.6.253.128'
+APP.config['MYSQL_DATABASE_HOST'] = 'localhost'
 MYSQL.init_app(APP)
 
 CONN = MYSQL.connect()
@@ -83,37 +83,51 @@ def adminPanel():
     if not 'userAdmin' in request.cookies:
         return flask.redirect(flask.url_for('admin', notLoggedIn=True))
 
-    return flask.render_template("adminPanel.html", userCount=str(len(code_list)))
+    return flask.render_template("adminPanel.html", userCount=str("NULL"))
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
-    global code_list
+    #global code_list
     if 'userCode' in request.cookies:
-        if request.cookies.get('userCode') in code_list:
-            flask.redirect(flask.url_for('home'))
-        else:
-            code_list.append(request.cookies.get('userCode'))
+        # if request.cookies.get('userCode') in code_list:
+        return flask.redirect(flask.url_for('home'))
+        # else:
+        #     code_list.append(request.cookies.get('userCode'))
 
     return flask.redirect(flask.url_for('getCode'))
 
 
 def create_code():
-    global code_list
-    with open(os.path.join(CWD, "names.txt")) as fp:
-        listNames = fp.readlines()
+    #global code_list
+    with open(os.path.join(CWD, "names.txt")) as lfp:
+        listNames = lfp.readlines()
 
-    with open(os.path.join(CWD, "adjectives.txt")) as fp:
-        listAdjectives = fp.readlines()
+    with open(os.path.join(CWD, "adjectives.txt")) as lfp:
+        listAdjectives = lfp.readlines()
+
 
     code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
     ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
+
+    cursor = CONN.cursor()
+    cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+    CONN.commit()
     #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    while code in code_list:
+    while code == cursor.fetchone()[0]:
         # code = ''.join(random.choices(
         #     string.ascii_uppercase + string.digits, k=4))
         code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
         ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
-    code_list.append(code)
+        cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+        CONN.commit()
+
+    # code_list.append(code)
+
+    cursor.execute("INSERT INTO `charities_day`.`users` (`userCode`) VALUES ('%s');" %
+                   (code))
+    CONN.commit()
+    cursor.close()
+
     return code
 
 
@@ -265,10 +279,10 @@ def getVoteAnswer():
     if not answer:
         answer = "NaN"
     
-    # cursor = CONN.cursor()
-    # cursor.execute("INSERT INTO `charities_day`.`vote-answers` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
-    #                (userCode, userGroup, currentVote, answer))
-    # CONN.commit()
+    cursor = CONN.cursor()
+    cursor.execute("INSERT INTO `charities_day`.`vote-results` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
+                   (userCode, userGroup, currentVote, answer))
+    CONN.commit()
 
     response = flask.make_response(flask.render_template("voteFinished.html",
                                                          code=userCode,
