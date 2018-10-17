@@ -26,6 +26,9 @@ Ape
 Aphid
 Fox
 Wolf
+Corgi
+Poodle
+Collie
 Armadillo
 Arrow
 Baboon
