@@ -88,7 +88,15 @@
 
     <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Stats</h4>
+        {% if quizzesEntered == 1 and votesEntered == 1 %}
+        You have entered <strong>{{ quizzesEntered }}</strong> quiz and have <strong>{{ votesEntered }}</strong> vote.
+        {% elif quizzesEntered == 1 %}
+        You have entered <strong>{{ quizzesEntered }}</strong> quiz and voted <strong>{{ votesEntered }}</strong> times.
+        {% elif votesEntered == 1 %}
+        You have entered <strong>{{ quizzesEntered }}</strong> quizzes and have <strong>{{ votesEntered }}</strong> vote.
+        {% else %}
         You have entered <strong>{{ quizzesEntered }}</strong> quizzes and voted <strong>{{ votesEntered }}</strong> times.
+        {% endif %}
     </div>
 
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
