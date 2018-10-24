@@ -105,7 +105,18 @@ def adminPanel():
             # CONN.commit()
             voteSqlLen = str(cursor.fetchone()[0])
 
-    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen)
+    quizzes, votes = [], []
+    for quiz in quizzesDict["quizzes"]:
+        quizzes.append(dict(
+            quizName = quizzesDict["quizzes"][quiz]["name"],
+            quizAvaliable = quizzesDict["quizzes"][quiz]["available"]))
+
+    for vote in votesDict["votes"]:
+        votes.append(dict(
+            voteName = votesDict["votes"][vote]["name"],
+            voteAvaliable = votesDict["votes"][vote]["available"]))
+    print(len(votes))
+    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen,quizzes=quizzes, votes=votes)
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
