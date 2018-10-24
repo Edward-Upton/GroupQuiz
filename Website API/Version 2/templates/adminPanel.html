@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="refresh" content="2" />
+    <!-- <meta http-equiv="refresh" content="2" /> -->
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" media="screen" href="../static/css/bootstrap.min.css">
@@ -18,15 +18,38 @@
         <strong style="font-size: 20px">Charities Day Admin</strong>
     </div>
     <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
-        <button class="btn btn-primary" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+        <div class="container bg-primary" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
                 <strong>Users: </strong><span class="badge">{{ userCount }}</span>
-        </button>
-        <button class="btn btn-info" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+        </div>
+        <div class="container bg-warning" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
                 <strong>Quiz SQL Entries: </strong><span class="badge">{{ quizSqlLen }}</span>
-        </button>
-        <button class="btn btn-primary" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+        </div>
+        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            {% for quiz in quizzes %}
+                {% if quiz.quizAvaliable %}
+                    <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+                        name='{{ quiz.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> {{ quiz.quizName }}</div>
+                {% else %}
+                    <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+                        name='{{ quiz.quizName }}'><span class="glyphicon glyphicon-remove-circle"></span> {{ quiz.quizName }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="container bg-warning" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
                 <strong>Vote SQL Entries: </strong><span class="badge">{{ voteSqlLen }}</span>
-        </button>
+        </div>
+        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            {% for vote in votes %}
+                {% if vote.voteAvaliable %}
+                    <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+                        name='{{ vote.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> {{ vote.voteName }}</div>
+                {% else %}
+                    <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+                        name='{{ vote.voteName }}'><span class="glyphicon glyphicon-remove-circle"></span> {{ vote.voteName }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
