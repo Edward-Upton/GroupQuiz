@@ -107,14 +107,24 @@ def adminPanel():
 
     quizzes, votes = [], []
     for quiz in quizzesDict["quizzes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quizzesDict["quizzes"][quiz]["name"])
+                quizCount = cursor.fetchone()[0]
         quizzes.append(dict(
             quizName = quizzesDict["quizzes"][quiz]["name"],
-            quizAvaliable = quizzesDict["quizzes"][quiz]["available"]))
+            quizAvaliable = quizzesDict["quizzes"][quiz]["available"],
+            quizCount = quizCount))
 
     for vote in votesDict["votes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" % votesDict["votes"][vote]["name"])
+                voteCount = cursor.fetchone()[0]
         votes.append(dict(
             voteName = votesDict["votes"][vote]["name"],
-            voteAvaliable = votesDict["votes"][vote]["available"]))
+            voteAvaliable = votesDict["votes"][vote]["available"],
+            voteCount = voteCount))
     print(len(votes))
     return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen,quizzes=quizzes, votes=votes)
 
