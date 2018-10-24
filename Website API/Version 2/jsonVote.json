@@ -11,6 +11,12 @@
             "description": "Example Vote Description",
             "options": ["Vote Option 1", "Vote Option 2"],
             "available": true
+        },
+        "Example Vote 3": {
+            "name": "Example Vote 3",
+            "description": "Example Vote Description",
+            "options": ["Vote Option 1", "Vote Option 2"],
+            "available": false
         }
     }
 }
