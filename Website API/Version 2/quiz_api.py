@@ -83,7 +83,19 @@ def adminPanel():
     if not 'userAdmin' in request.cookies:
         return flask.redirect(flask.url_for('admin', notLoggedIn=True))
 
-    return flask.render_template("adminPanel.html", userCount=str("NULL"))
+    cursor = CONN.cursor()
+    cursor.execute("SELECT COUNT(*) FROM `charities_day`.`users`")
+    CONN.commit()
+    userCount = str(cursor.fetchone()[0])
+    cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers`")
+    CONN.commit()
+    quizSqlLen = str(cursor.fetchone()[0])
+    cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results`")
+    CONN.commit()
+    voteSqlLen = str(cursor.fetchone()[0])
+
+    cursor.close()
+    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen)
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
