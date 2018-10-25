@@ -12,7 +12,7 @@ import random
 
 import flask
 #from numpy import random
-#from flaskext.mysql import MySQL
+from contextlib import closing
 from flask import request  # , make_response
 from flaskext.mysql import MySQL
 
@@ -27,8 +27,6 @@ APP.config['MYSQL_DATABASE_DB'] = 'charities_day'
 APP.config['MYSQL_DATABASE_HOST'] = 'localhost'
 MYSQL.init_app(APP)
 
-CONN = MYSQL.connect()
-
 code_list = list()
 
 CWD = os.path.dirname(os.path.realpath(__file__))
@@ -40,6 +38,15 @@ with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
     votesDict = json.load(fp)
 
 VOTING_READY = True  # Need API to toggle voting
+
+def make_connection():
+    """Used to make a connection to the database
+    
+    Returns:
+        flaskext.mysql.connection -- Connection Object
+    """
+
+    return MYSQL.connect()
 
 @APP.route('/', methods=['GET', 'POST'])
 def index():
@@ -83,7 +90,43 @@ def adminPanel():
     if not 'userAdmin' in request.cookies:
         return flask.redirect(flask.url_for('admin', notLoggedIn=True))
 
-    return flask.render_template("adminPanel.html", userCount=str("NULL"))
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`users`")
+            # CONN.commit()
+            userCount = str(cursor.fetchone()[0])
+        with conn as cursor:
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers`")
+            # CONN.commit()
+            quizSqlLen = str(cursor.fetchone()[0])
+        with conn as cursor:
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results`")
+            # CONN.commit()
+            voteSqlLen = str(cursor.fetchone()[0])
+
+    quizzes, votes = [], []
+    for quiz in quizzesDict["quizzes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quizzesDict["quizzes"][quiz]["name"])
+                quizCount = cursor.fetchone()[0]
+        quizzes.append(dict(
+            quizName = quizzesDict["quizzes"][quiz]["name"],
+            quizAvaliable = quizzesDict["quizzes"][quiz]["available"],
+            quizCount = quizCount))
+
+    for vote in votesDict["votes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" % votesDict["votes"][vote]["name"])
+                voteCount = cursor.fetchone()[0]
+        votes.append(dict(
+            voteName = votesDict["votes"][vote]["name"],
+            voteAvaliable = votesDict["votes"][vote]["available"],
+            voteCount = voteCount))
+    print(len(votes))
+    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen,quizzes=quizzes, votes=votes)
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
@@ -109,24 +152,27 @@ def create_code():
     code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
     ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
 
-    cursor = CONN.cursor()
-    cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
-    CONN.commit()
-    #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    while code == cursor.fetchone()[0]:
-        # code = ''.join(random.choices(
-        #     string.ascii_uppercase + string.digits, k=4))
-        code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
-        ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
-        cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
-        CONN.commit()
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+        # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+        # CONN.commit()
+        #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+            while code == cursor.fetchone()[0]:
+            # code = ''.join(random.choices(
+            #     string.ascii_uppercase + string.digits, k=4))
+                code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
+                ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
+                cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+                # CONN.commit()
 
-    # code_list.append(code)
+        # code_list.append(code)
 
-    cursor.execute("INSERT INTO `charities_day`.`users` (`userCode`) VALUES ('%s');" %
-                   (code))
-    CONN.commit()
-    cursor.close()
+        with conn as cursor:
+            cursor.execute("INSERT INTO `charities_day`.`users` (`userCode`) VALUES ('%s');" %
+                        (code))
+        # CONN.commit()
+        # cursor.close()
 
     return code
 
@@ -279,10 +325,12 @@ def getVoteAnswer():
     if not answer:
         answer = "NaN"
     
-    cursor = CONN.cursor()
-    cursor.execute("INSERT INTO `charities_day`.`vote-results` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
-                   (userCode, userGroup, currentVote, answer))
-    CONN.commit()
+    with closing(make_connection()) as conn:
+    # cursor = CONN.cursor()
+        with conn as cursor:
+            cursor.execute("INSERT INTO `charities_day`.`vote-results` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
+                           (userCode, userGroup, currentVote, answer))
+    # CONN.commit()
 
     response = flask.make_response(flask.render_template("voteFinished.html",
                                                          code=userCode,
@@ -382,11 +430,12 @@ def getAnswer():
     else:
         isCorrect = "n"
 
-    cursor = CONN.cursor()
-
-    cursor.execute("INSERT INTO `charities_day`.`quiz-answers` (`userCode`, `userGroup`, `quizName`, `quizQuestion`, `questionAnswer`, `isCorrect`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" %
-                   (userCode, userGroup, currentQuiz, questionNumber, answer, isCorrect))
-    CONN.commit()
+    # cursor = CONN.cursor()
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            cursor.execute("INSERT INTO `charities_day`.`quiz-answers` (`userCode`, `userGroup`, `quizName`, `quizQuestion`, `questionAnswer`, `isCorrect`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" %
+                           (userCode, userGroup, currentQuiz, questionNumber, answer, isCorrect))
+    # CONN.commit()
 
     response = flask.make_response(flask.redirect(flask.url_for("quizPage")))
     response.set_cookie("questionNumber", str(int(questionNumber) + 1))
@@ -395,7 +444,7 @@ def getAnswer():
 
 
 if __name__ == "__main__":
-    try:
-        APP.run(host="0.0.0.0", port=80, debug=DEBUG)
-    finally:
-        CONN.close()
+    # try:
+    APP.run(host="0.0.0.0", port=80, debug=DEBUG)
+    # finally:
+    #     return
