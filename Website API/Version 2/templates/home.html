@@ -47,7 +47,7 @@
     <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Vote Events</h4>
         <p style="text-align: center">Have your say about on-stage events!</p>
-        <form method="POST", action="/getVote", style="width: 100%; margin-left: auto; margin-right: auto">
+        <form method="POST" , action="/getVote" , style="width: 100%; margin-left: auto; margin-right: auto">
             {% for vote in votes %}
             <div>
                 <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-primary', 'btn btn-info') }}"
@@ -86,16 +86,26 @@
 
     <hr>
 
+    <div class="btn btn-primary">
+        <a href='/userGraphs'>
+            <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" name='results'
+                type='submit' value='results'>Results</button>
+        </a>
+    </div>
+
     <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Stats</h4>
         {% if quizzesEntered == 1 and votesEntered == 1 %}
         You have entered <strong>{{ quizzesEntered }}</strong> quiz and have <strong>{{ votesEntered }}</strong> vote.
         {% elif quizzesEntered == 1 %}
-        You have entered <strong>{{ quizzesEntered }}</strong> quiz and voted <strong>{{ votesEntered }}</strong> times.
+        You have entered <strong>{{ quizzesEntered }}</strong> quiz and voted <strong>{{ votesEntered }}</strong>
+        times.
         {% elif votesEntered == 1 %}
-        You have entered <strong>{{ quizzesEntered }}</strong> quizzes and have <strong>{{ votesEntered }}</strong> vote.
+        You have entered <strong>{{ quizzesEntered }}</strong> quizzes and have <strong>{{ votesEntered }}</strong>
+        vote.
         {% else %}
-        You have entered <strong>{{ quizzesEntered }}</strong> quizzes and voted <strong>{{ votesEntered }}</strong> times.
+        You have entered <strong>{{ quizzesEntered }}</strong> quizzes and voted <strong>{{ votesEntered }}</strong>
+        times.
         {% endif %}
     </div>
 
