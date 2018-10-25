@@ -109,29 +109,42 @@ def adminPanel():
     for quiz in quizzesDict["quizzes"]:
         with closing(make_connection()) as conn:
             with conn as cursor:
-                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quizzesDict["quizzes"][quiz]["name"])
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quiz)
                 quizCount = cursor.fetchone()[0] # Get total answers for current quiz
 
+                quizQuestions = quizzesDict["quizzes"][quiz]["questions"]
+                quizCorrectAnswers = quizzesDict["quizzes"][quiz]["answers"]
 
                 quizResults = []
-                for question in quizzesDict["quizzes"][quiz]["questions"]: # For every question in current quiz
-                    quizQuestionResults = []
-                    for questionIndex, questionAns in enumerate(question): # For every answer in current question
-                        quizAnswerResults = []
-                        if questionIndex: # Skip the first item in the list since it is the question, not an answer
-                                                        result = {
-                                "name": questionAns, # Question Answer Title
-                                "totalAnswers": cursor.fetchone()[0] # Question Total Answers
-                            }
-                            quizAnswerResults.append(result)
-                            quizQuestionResults.append(quizAnswerResults)
-                quizResults.append(dict(name=question[0], results=quizQuestionResults))
+                for question in quizQuestions:
+                    answerResults = []
+                    questionName = question[0]
+                    questionList = question
+                    questionList.remove(question[0])
+                    questionAnswers = questionList
+                    questionTally = []
+                    for possibleAnswer in questionAnswers:
+                        cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE (`quizQuestion` = '%s' AND `questionAnswer` = '%s')" % (quizQuestions.index(question), possibleAnswer))
+                        questionTally.append(cursor.fetchone()[0])
+                    quizResults.append(dict(
+                        questionName = questionName,
+                        questionAnswers = questionAnswers,
+                        questionTally = questionTally,
+                        correctAnswer = quizCorrectAnswers[quizQuestions.index(question)]
+                    ))
 
+        #             for possibleAnswers in question:
+        #             quizResults.append(dict(name=question[0], 
+        #                                     possibleAnswers=question.pop(question.index(question[0])),
+        #                                     answerResults = answerResults,
+        #                                     correctAnswer=quizCorrectAnswers[quizQuestions.index(question)]))
+        # print(quizResults)
 
 
         quizzes.append(dict(
             quizName = quizzesDict["quizzes"][quiz]["name"],
             quizAvaliable = quizzesDict["quizzes"][quiz]["available"],
+            quizCount = quizCount,
             quizResults = quizResults
             ))
 

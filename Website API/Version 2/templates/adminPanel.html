@@ -30,7 +30,7 @@
             {% for quiz in quizzes %}
             {% if quiz.quizAvaliable %}
             <div style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                name='{{ quiz.voteName }}'> <strong>{{ quiz.quizName
+                name='{{ quiz.quizName }}'> <strong>{{ quiz.quizName
                     }}</strong> <span class="badge badge-danger">{{ quiz.quizCount }} answers</span></div>
             {% else %}
             <div style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
@@ -39,11 +39,15 @@
             {% endif %}
             
             {% for result in quiz.quizResults %}
-                <div class="alert alert-success">
-                    {{ result.name }}
+                <div class="container">
+                    {{ result.questionName }}
                 </div>
-                {% for answers in result.results %}
-                    <strong>{{ answers.name }}:</strong><span class="badge badge-success">{{ answers.totalAnswers }}</span>
+                {% for answers in result.questionAnswers %}
+                    {% if answers == result.correctAnswer %}
+                        <strong>{{ answers }}:</strong><span class="badge badge-success">{{ result.questionTally[loop.index] }}</span>
+                    {% else %}
+                        <strong>{{ answers }}:</strong><span class="badge badge-danger">{{ result.questionTally[loop.index] }}</span>
+                    {% endif %}
                 {% endfor %}
             {% endfor %}
 
