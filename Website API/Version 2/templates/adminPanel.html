@@ -37,6 +37,16 @@
                 name='{{ quiz.quizName }}' aria-disabled="true"> <strong>{{
                     quiz.quizName }}</strong> <span class="badge badge-danger">{{ quiz.quizCount }} answers</span></div>
             {% endif %}
+            
+            {% for result in quiz.quizResults %}
+                <div class="alert alert-success">
+                    {{ result.name }}
+                </div>
+                {% for answers in result.results %}
+                    <strong>{{ answers.name }}:</strong><span class="badge badge-success">{{ answers.totalAnswers }}</span>
+                {% endfor %}
+            {% endfor %}
+
             {% endfor %}
         </div>
         <hr>

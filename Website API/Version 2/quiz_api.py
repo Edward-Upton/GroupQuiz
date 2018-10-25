@@ -110,11 +110,30 @@ def adminPanel():
         with closing(make_connection()) as conn:
             with conn as cursor:
                 cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quizzesDict["quizzes"][quiz]["name"])
-                quizCount = cursor.fetchone()[0]
+                quizCount = cursor.fetchone()[0] # Get total answers for current quiz
+
+
+                quizResults = []
+                for question in quizzesDict["quizzes"][quiz]["questions"]: # For every question in current quiz
+                    quizQuestionResults = []
+                    for questionIndex, questionAns in enumerate(question): # For every answer in current question
+                        quizAnswerResults = []
+                        if questionIndex: # Skip the first item in the list since it is the question, not an answer
+                                                        result = {
+                                "name": questionAns, # Question Answer Title
+                                "totalAnswers": cursor.fetchone()[0] # Question Total Answers
+                            }
+                            quizAnswerResults.append(result)
+                            quizQuestionResults.append(quizAnswerResults)
+                quizResults.append(dict(name=question[0], results=quizQuestionResults))
+
+
+
         quizzes.append(dict(
             quizName = quizzesDict["quizzes"][quiz]["name"],
             quizAvaliable = quizzesDict["quizzes"][quiz]["available"],
-            quizCount = quizCount))
+            quizResults = quizResults
+            ))
 
     for vote in votesDict["votes"]:
         with closing(make_connection()) as conn:
