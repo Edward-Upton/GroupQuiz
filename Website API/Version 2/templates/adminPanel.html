@@ -19,51 +19,43 @@
     <div class="alert alert-primary">
         <strong style="font-size: 20px">Charities Day Admin</strong>
     </div>
-    <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
-        <div class="container bg-primary" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
+        <div class="container-fluid bg-primary" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
             <strong>Users: </strong><span class="badge">{{ userCount }}</span>
         </div>
-        <div class="container bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+        <div class="container-fluid bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
             <strong>Quiz SQL Entries: </strong><span class="badge">{{ quizSqlLen }}</span>
         </div>
-        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+        <div class="container-fluid" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
             {% for quiz in quizzes %}
             {% if quiz.quizAvaliable %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
                 name='{{ quiz.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ quiz.quizName
                     }}</strong>: {{ quiz.quizCount }} answers</div>
             {% else %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
                 name='{{ quiz.quizName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
                     quiz.quizName }}</strong>: {{ quiz.quizCount }} answers</div>
             {% endif %}
             {% endfor %}
         </div>
         <hr>
-        <div class="container bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+        <div class="container-fluid bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
             <strong>Vote SQL Entries: </strong><span class="badge">{{ voteSqlLen }}</span>
         </div>
-        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+        <div class="container-fluid" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
             {% for vote in votes %}
             {% if vote.voteAvaliable %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
                 name='{{ vote.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ vote.voteName
                     }}</strong>: {{ vote.voteCount }} votes</div>
             {% else %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
                 name='{{ vote.voteName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
                     vote.voteName }}</strong>: {{ vote.voteCount }} votes</div>
             {% endif %}
             {% endfor %}
         </div>
-    </div>
-    <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
-    </div>
-    </p>
-    <div class="alert alert-primary" style="margin-top: 20px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit
-                Bandits</strong></p>
     </div>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
