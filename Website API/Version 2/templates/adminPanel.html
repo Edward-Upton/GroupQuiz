@@ -81,9 +81,24 @@
                         }}</strong> <span class="badge badge-success">{{ vote.voteCount }} votes</span></div>
                 {% else %}
                 <div style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ vote.voteName }}' aria-disabled="true"> <strong>{{
+                    name='{{ vote.voteName }}'> <strong>{{
                         vote.voteName }}</strong> <span class="badge badge-danger">{{ vote.voteCount }} votes</span></div>
                 {% endif %}
+
+                <div class="collapse" id="{{ vote.voteName }}">
+                        <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+                            {% for result in vote.voteResults %}
+                            <div>{{ vote.questionName }}</div>
+
+                            {% for answers in result.questionAnswers %}
+                            <strong>{{ answers }}:</strong><span class="badge badge-success">{{
+                                result.voteTally[loop.index-1]
+                                }}</span>
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
                 {% endfor %}
             </div>
         </div>
