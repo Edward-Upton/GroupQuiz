@@ -63,7 +63,7 @@
                         {% endfor %}
                     </div>
                 </div>
-
+                <hr>
                 {% endfor %}
             </div>
         </div>
@@ -76,29 +76,33 @@
             <div class="collapse" id="votesCollapse">
                 {% for vote in votes %}
                 {% if vote.voteAvaliable %}
-                <div style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ vote.voteName }}'> <strong>{{ vote.voteName
-                        }}</strong> <span class="badge badge-success">{{ vote.voteCount }} votes</span></div>
+                <button class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" type="button"
+                    data-toggle="collapse" data-target="#{{ vote.voteName }}" aria-expanded="false" aria-controls="{{ vote.voteName }}"
+                    style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" name='{{ vote.voteName }}'>
+                    <strong>{{ vote.voteName
+                        }}</strong> <span class="badge badge-success">{{ vote.voteCount }} votes</span></button>
                 {% else %}
-                <div style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ vote.voteName }}'> <strong>{{
-                        vote.voteName }}</strong> <span class="badge badge-danger">{{ vote.voteCount }} votes</span></div>
+                <button class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" type="button"
+                    data-toggle="collapse" data-target="#{{ vote.voteName }}" aria-expanded="false" aria-controls="{{ vote.voteName }}"
+                    style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" name='{{ vote.voteName }}'>
+                    <strong>{{
+                        vote.voteName }}</strong> <span class="badge badge-danger">{{ vote.voteCount }} votes</span></button>
                 {% endif %}
 
                 <div class="collapse" id="{{ vote.voteName }}">
-                        <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
-                            {% for result in vote.voteResults %}
-                            <div>{{ vote.questionName }}</div>
+                    <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+                        {% for result in vote.voteResults %}
+                        <div>{{ vote.questionName }}</div>
 
-                            {% for answers in result.questionAnswers %}
-                            <strong>{{ answers }}:</strong><span class="badge badge-success">{{
+                        {% for answers in result.voteQuestions %}
+                        <div><strong>{{ answers }}: </strong><span class="badge badge-info">{{
                                 result.voteTally[loop.index-1]
-                                }}</span>
-                            {% endfor %}
-                            {% endfor %}
-                        </div>
+                                }}</span></div>
+                        {% endfor %}
+                        {% endfor %}
                     </div>
-
+                </div>
+                <hr>
                 {% endfor %}
             </div>
         </div>
