@@ -41,7 +41,7 @@ VOTING_READY = True  # Need API to toggle voting
 
 def make_connection():
     """Used to make a connection to the database
-    
+
     Returns:
         flaskext.mysql.connection -- Connection Object
     """
@@ -114,17 +114,17 @@ def adminPanel():
 
                 quizQuestions = quizzesDict["quizzes"][quiz]["questions"]
                 quizCorrectAnswers = quizzesDict["quizzes"][quiz]["answers"]
-
+                print(quizQuestions)
                 quizResults = []
                 for question in quizQuestions:
+                    print(question)
                     answerResults = []
                     questionName = question[0]
-                    questionList = question
-                    questionList.remove(question[0])
-                    questionAnswers = questionList
+                    questionAnswers = question[1:]
                     questionTally = []
                     for possibleAnswer in questionAnswers:
-                        cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE (`quizQuestion` = '%s' AND `questionAnswer` = '%s')" % (quizQuestions.index(question), possibleAnswer))
+                        print(question)
+                        cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE (`quizName` = '%s' AND `quizQuestion` = '%s' AND `questionAnswer` = '%s')" % (quiz, quizQuestions.index(question), possibleAnswer))
                         questionTally.append(cursor.fetchone()[0])
                     quizResults.append(dict(
                         questionName = questionName,
@@ -134,7 +134,7 @@ def adminPanel():
                     ))
 
         #             for possibleAnswers in question:
-        #             quizResults.append(dict(name=question[0], 
+        #             quizResults.append(dict(name=question[0],
         #                                     possibleAnswers=question.pop(question.index(question[0])),
         #                                     answerResults = answerResults,
         #                                     correctAnswer=quizCorrectAnswers[quizQuestions.index(question)]))
@@ -157,7 +157,6 @@ def adminPanel():
             voteName = votesDict["votes"][vote]["name"],
             voteAvaliable = votesDict["votes"][vote]["available"],
             voteCount = voteCount))
-    print(len(votes))
     return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen,quizzes=quizzes, votes=votes)
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
@@ -272,7 +271,7 @@ def home():
         userQuizData = json.loads(request.cookies.get("userQuizData"))
     else:
         userQuizData = {"quizzesAnswered": []}
-    
+
     if isinstance(request.cookies.get("userVoteData"), str):
         userVoteData = json.loads(request.cookies.get("userVoteData"))
     else:
@@ -284,7 +283,7 @@ def home():
         if quizzesDict["quizzes"][quiz]["available"]:
             if not quiz in userQuizzesAnswered:
                 quizzes.append(quizzesDict["quizzes"][quiz]["name"])
-    
+
     for vote in votesDict["votes"]:
         if votesDict["votes"][vote]["available"]:
             if not vote in userVotesAnswered:
@@ -331,8 +330,8 @@ def votePage():
         voteOptions = voteDict["options"]
 
         response = flask.make_response(flask.render_template("votePage.html",
-                                                             code=request.cookies.get("userCode"), 
-                                                             year=request.cookies.get("userGroup"), 
+                                                             code=request.cookies.get("userCode"),
+                                                             year=request.cookies.get("userGroup"),
                                                              voteName=currentVote,
                                                              voteDescription=voteDescription,
                                                              voteOptions=voteOptions))
@@ -348,7 +347,7 @@ def getVoteAnswer():
 
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
-    
+
     userCode = request.cookies.get("userCode")
     userGroup = request.cookies.get("userGroup")
     currentVote = request.cookies.get("currentVote")
@@ -356,7 +355,7 @@ def getVoteAnswer():
     answer = request.args.get("answer")
     if not answer:
         answer = "NaN"
-    
+
     with closing(make_connection()) as conn:
     # cursor = CONN.cursor()
         with conn as cursor:
