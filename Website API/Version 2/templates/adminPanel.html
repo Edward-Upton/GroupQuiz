@@ -16,62 +16,111 @@
 </head>
 
 <body>
-    <div class="alert alert-primary">
+    <div class="alert alert-secondary">
         <strong style="font-size: 20px">Charities Day Admin</strong>
     </div>
-    <div class="container rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
-        <div class="container bg-primary" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
-            <strong>Users: </strong><span class="badge">{{ userCount }}</span>
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
+        <div class="btn btn-primary" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+            <strong>Users: </strong><span class="badge badge-danger">{{ userCount }}</span>
         </div>
-        <div class="container bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
-            <strong>Quiz SQL Entries: </strong><span class="badge">{{ quizSqlLen }}</span>
-        </div>
-        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
-            {% for quiz in quizzes %}
-            {% if quiz.quizAvaliable %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
-                name='{{ quiz.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ quiz.quizName
-                    }}</strong>: {{ quiz.quizCount }} answers</div>
-            {% else %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
-                name='{{ quiz.quizName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
-                    quiz.quizName }}</strong>: {{ quiz.quizCount }} answers</div>
-            {% endif %}
-            {% endfor %}
+        <div class="container-fluid rounded" style="border-radius:5px; padding:20px; background-color: rgb(225, 225, 225); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            <button class="btn btn-info" data-toggle="collapse" data-target="#quizzesCollapse" aria-expanded="false"
+                aria-controls="quizzesCollapse" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+                <strong>Quiz SQL Entries: </strong><span class="badge badge-danger">{{ quizSqlLen }} total answers</span>
+            </button>
+            <div class="collapse" id="quizzesCollapse">
+                {% for quiz in quizzes %}
+                {% if quiz.quizAvaliable %}
+                <button type="button" data-toggle="collapse" data-target="#{{ quiz.quizName }}" aria-expanded="false"
+                    aria-controls="{{ quiz.quizName }}" style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px"
+                    class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" name='{{ quiz.quizName }}'>
+                    <strong>{{ quiz.quizName
+                        }}</strong> <span class="badge badge-success">{{ quiz.quizCount }} answers</span></button>
+                {% else %}
+                <button type="button" data-toggle="collapse" data-target="#{{ quiz.quizName }}" aria-expanded="false"
+                    aria-controls="{{ quiz.quizName }}" style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px"
+                    class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" name='{{ quiz.quizName }}'>
+                    <strong>{{
+                        quiz.quizName }}</strong> <span class="badge badge-danger">{{ quiz.quizCount }} answers</span></button>
+                {% endif %}
+
+                <div class="collapse" id="{{ quiz.quizName }}">
+                    <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+                        {% for result in quiz.quizResults %}
+                        <div>{{ result.questionName }}</div>
+
+                        {% for answers in result.questionAnswers %}
+                        {% if answers == result.correctAnswer %}
+                        <strong>{{ answers }}:</strong><span class="badge badge-success">{{
+                            result.questionTally[loop.index-1]
+                            }}</span>
+                        {% else %}
+                        <strong>{{ answers }}:</strong><span class="badge badge-danger">{{
+                            result.questionTally[loop.index-1]
+                            }}</span>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
         </div>
         <hr>
-        <div class="container bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
-            <strong>Vote SQL Entries: </strong><span class="badge">{{ voteSqlLen }}</span>
+        <div class="container-fluid rounded" style="border-radius:5px; padding:20px; background-color: rgb(225, 225, 225); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            <button class="btn btn-info" data-toggle="collapse" data-target="#votesCollapse" aria-expanded="false"
+                aria-controls="votessCollapse" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+                <strong>Vote SQL Entries: </strong><span class="badge badge-danger">{{ voteSqlLen }} total votes</span>
+            </button>
+            <div class="collapse" id="votesCollapse">
+                {% for vote in votes %}
+                {% if vote.voteAvaliable %}
+                <button class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" type="button"
+                    data-toggle="collapse" data-target="#{{ vote.voteName }}" aria-expanded="false" aria-controls="{{ vote.voteName }}"
+                    style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" name='{{ vote.voteName }}'>
+                    <strong>{{ vote.voteName
+                        }}</strong> <span class="badge badge-success">{{ vote.voteCount }} votes</span></button>
+                {% else %}
+                <button class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" type="button"
+                    data-toggle="collapse" data-target="#{{ vote.voteName }}" aria-expanded="false" aria-controls="{{ vote.voteName }}"
+                    style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" name='{{ vote.voteName }}'>
+                    <strong>{{
+                        vote.voteName }}</strong> <span class="badge badge-danger">{{ vote.voteCount }} votes</span></button>
+                {% endif %}
+
+                <div class="collapse" id="{{ vote.voteName }}">
+                    <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+                        {% for result in vote.voteResults %}
+                        <div>{{ vote.questionName }}</div>
+
+                        {% for answers in result.voteQuestions %}
+                        <div><strong>{{ answers }}: </strong><span class="badge badge-info">{{
+                                result.voteTally[loop.index-1]
+                                }}</span></div>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
         </div>
-        <div class="container" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
-            {% for vote in votes %}
-            {% if vote.voteAvaliable %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
-                name='{{ vote.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ vote.voteName
-                    }}</strong>: {{ vote.voteCount }} votes</div>
-            {% else %}
-            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container bg-primary', 'container bg-info') }}"
-                name='{{ vote.voteName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
-                    vote.voteName }}</strong>: {{ vote.voteCount }} votes</div>
-            {% endif %}
-            {% endfor %}
-        </div>
+    </div>
     </div>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
     </div>
     </p>
-    <div class="alert alert-primary" style="margin-top: 20px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Programmed by <strong>ENTITY Development</strong> and <strong>Bit
-                Bandits</strong></p>
-    </div>
-    <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
-        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
-    </div>
-    </p>
-    <div class="alert alert-primary" style="padding-top: 10px">
+    <div class="alert alert-info" style="padding-top: 10px">
         <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

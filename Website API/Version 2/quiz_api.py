@@ -39,14 +39,16 @@ with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
 
 VOTING_READY = True  # Need API to toggle voting
 
+
 def make_connection():
     """Used to make a connection to the database
-    
+
     Returns:
         flaskext.mysql.connection -- Connection Object
     """
 
     return MYSQL.connect()
+
 
 @APP.route('/', methods=['GET', 'POST'])
 def index():
@@ -97,11 +99,13 @@ def adminPanel():
             # CONN.commit()
             userCount = str(cursor.fetchone()[0])
         with conn as cursor:
-            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers`")
+            cursor.execute(
+                "SELECT COUNT(*) FROM `charities_day`.`quiz-answers`")
             # CONN.commit()
             quizSqlLen = str(cursor.fetchone()[0])
         with conn as cursor:
-            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results`")
+            cursor.execute(
+                "SELECT COUNT(*) FROM `charities_day`.`vote-results`")
             # CONN.commit()
             voteSqlLen = str(cursor.fetchone()[0])
 
@@ -109,24 +113,66 @@ def adminPanel():
     for quiz in quizzesDict["quizzes"]:
         with closing(make_connection()) as conn:
             with conn as cursor:
-                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quizzesDict["quizzes"][quiz]["name"])
+                cursor.execute(
+                    "SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quiz)
+                # Get total answers for current quiz
                 quizCount = cursor.fetchone()[0]
+
+                quizQuestions = quizzesDict["quizzes"][quiz]["questions"]
+                quizCorrectAnswers = quizzesDict["quizzes"][quiz]["answers"]
+                quizResults = []
+                for question in quizQuestions:
+                    questionName = question[0]
+                    questionAnswers = question[1:]
+                    questionTally = []
+                    for possibleAnswer in questionAnswers:
+                        cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE (`quizName` = '%s' AND `quizQuestion` = '%s' AND `questionAnswer` = '%s')" % (
+                            quiz, quizQuestions.index(question), possibleAnswer))
+                        questionTally.append(cursor.fetchone()[0])
+                    quizResults.append(dict(
+                        questionName=questionName,
+                        questionAnswers=questionAnswers,
+                        questionTally=questionTally,
+                        correctAnswer=quizCorrectAnswers[quizQuestions.index(
+                            question)]
+                    ))
+
         quizzes.append(dict(
-            quizName = quizzesDict["quizzes"][quiz]["name"],
-            quizAvaliable = quizzesDict["quizzes"][quiz]["available"],
-            quizCount = quizCount))
+            quizName=quizzesDict["quizzes"][quiz]["name"],
+            quizAvaliable=quizzesDict["quizzes"][quiz]["available"],
+            quizCount=quizCount,
+            quizResults=quizResults
+        ))
 
     for vote in votesDict["votes"]:
         with closing(make_connection()) as conn:
             with conn as cursor:
-                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" % votesDict["votes"][vote]["name"])
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" %
+                               votesDict["votes"][vote]["name"])
                 voteCount = cursor.fetchone()[0]
+
+                voteResults = []
+                voteTally = []
+                voteQuestions = votesDict["votes"][vote]["options"]
+                voteName = votesDict["votes"][vote]["name"]
+                for possibleOption in voteQuestions:
+                    cursor.execute(
+                        "SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE (`voteName` = '%s' AND `voteAnswer` = '%s')" % (vote, possibleOption))
+                    voteTally.append(cursor.fetchone()[0])
+                voteResults.append(dict(
+                    voteName=voteName,
+                    voteQuestions=voteQuestions,
+                    voteTally=voteTally,
+                ))
+
         votes.append(dict(
-            voteName = votesDict["votes"][vote]["name"],
-            voteAvaliable = votesDict["votes"][vote]["available"],
-            voteCount = voteCount))
-    print(len(votes))
-    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen,quizzes=quizzes, votes=votes)
+            voteName=votesDict["votes"][vote]["name"],
+            voteAvaliable=votesDict["votes"][vote]["available"],
+            voteResults=voteResults,
+            voteCount=voteCount))
+
+    return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen, quizzes=quizzes, votes=votes)
+
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
@@ -148,34 +194,34 @@ def create_code():
     with open(os.path.join(CWD, "adjectives.txt")) as lfp:
         listAdjectives = lfp.readlines()
 
-
     code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
     ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
 
     with closing(make_connection()) as conn:
         with conn as cursor:
-        # cursor = CONN.cursor()
-            cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+            # cursor = CONN.cursor()
+            cursor.execute(
+                "SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
         # CONN.commit()
         #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
             while code == cursor.fetchone()[0]:
-            # code = ''.join(random.choices(
-            #     string.ascii_uppercase + string.digits, k=4))
+                # code = ''.join(random.choices(
+                #     string.ascii_uppercase + string.digits, k=4))
                 code = listAdjectives[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize(
                 ) + " " + listNames[random.randint(0, len(listAdjectives)-1)].strip('\n').capitalize()
-                cursor.execute("SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
+                cursor.execute(
+                    "SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
                 # CONN.commit()
 
         # code_list.append(code)
 
         with conn as cursor:
             cursor.execute("INSERT INTO `charities_day`.`users` (`userCode`) VALUES ('%s');" %
-                        (code))
+                           (code))
         # CONN.commit()
         # cursor.close()
 
     return code
-
 
 
 @APP.route('/getCode', methods=['GET', 'POST'])
@@ -240,7 +286,7 @@ def home():
         userQuizData = json.loads(request.cookies.get("userQuizData"))
     else:
         userQuizData = {"quizzesAnswered": []}
-    
+
     if isinstance(request.cookies.get("userVoteData"), str):
         userVoteData = json.loads(request.cookies.get("userVoteData"))
     else:
@@ -252,7 +298,7 @@ def home():
         if quizzesDict["quizzes"][quiz]["available"]:
             if not quiz in userQuizzesAnswered:
                 quizzes.append(quizzesDict["quizzes"][quiz]["name"])
-    
+
     for vote in votesDict["votes"]:
         if votesDict["votes"][vote]["available"]:
             if not vote in userVotesAnswered:
@@ -299,15 +345,19 @@ def votePage():
         voteOptions = voteDict["options"]
 
         response = flask.make_response(flask.render_template("votePage.html",
-                                                             code=request.cookies.get("userCode"), 
-                                                             year=request.cookies.get("userGroup"), 
+                                                             code=request.cookies.get(
+                                                                 "userCode"),
+                                                             year=request.cookies.get(
+                                                                 "userGroup"),
                                                              voteName=currentVote,
                                                              voteDescription=voteDescription,
                                                              voteOptions=voteOptions))
     else:
-        response = flask.make_response(flask.redirect(flask.url_for("voteNotReady")))
+        response = flask.make_response(
+            flask.redirect(flask.url_for("voteNotReady")))
 
     return response
+
 
 @APP.route('/getVoteAnswer', methods=['GET', 'POST'])
 def getVoteAnswer():
@@ -316,7 +366,7 @@ def getVoteAnswer():
 
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
-    
+
     userCode = request.cookies.get("userCode")
     userGroup = request.cookies.get("userGroup")
     currentVote = request.cookies.get("currentVote")
@@ -324,9 +374,9 @@ def getVoteAnswer():
     answer = request.args.get("answer")
     if not answer:
         answer = "NaN"
-    
+
     with closing(make_connection()) as conn:
-    # cursor = CONN.cursor()
+        # cursor = CONN.cursor()
         with conn as cursor:
             cursor.execute("INSERT INTO `charities_day`.`vote-results` (`userCode`, `userGroup`, `voteName`, `voteAnswer`) VALUES ('%s', '%s', '%s', '%s');" %
                            (userCode, userGroup, currentVote, answer))
@@ -341,7 +391,6 @@ def getVoteAnswer():
     voteData["votesAnswered"].append(currentVote)
     response.set_cookie("userVoteData", str(json.dumps(voteData)))
     return response
-
 
 
 @APP.route('/getQuiz', methods=['GET', 'POST'])
