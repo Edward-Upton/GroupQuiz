@@ -157,11 +157,11 @@ def adminPanel():
                 voteName = votesDict["votes"][vote]["name"]
                 for possibleOption in voteQuestions:
                     cursor.execute(
-                        "SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE (`voteName` = '%s' AND `votenAnswer` = '%s')" % (vote, possibleOption))
+                        "SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE (`voteName` = '%s' AND `voteAnswer` = '%s')" % (vote, possibleOption))
                     voteTally.append(cursor.fetchone()[0])
                 voteResults.append(dict(
                     voteName=voteName,
-                    questionAnswers=questionAnswers,
+                    voteQuestions=voteQuestions,
                     voteTally=voteTally,
                 ))
 
