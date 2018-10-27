@@ -18,30 +18,39 @@
     <div class="alert alert-secondary">
         <strong style="font-size: 20px">Charities Day Admin</strong>
     </div>
-    <div class="alert alert-info">
-        <div>To gain access, please enter the password.</div>
+    <div class="container-fluid" style="padding: 20px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
+        <div class="alert alert-info">
+            <div>To gain access, please enter the password.</div>
+        </div>
+        <form method="POST" action="/getAdmin" style="width: 100%; margin-left: auto; margin-right: auto">
+            <div class="form-group">
+                <label for="password" style="margin-left:10px">Password</label>
+                <input type="password" id="passwordField" name="passwordField" class="form-control" placeholder="Password"
+                    required>
+            </div>
+            <div class="form-group">
+                <button type="submit" style="margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%; height: 40px"
+                    name="login" value="Login" class="btn btn-outline-danger">Login</button>
+            </div>
+            {% if passwordFailed == True %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Incorrect Password.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            {% if notLoggedIn == True %}
+            <div role="alert" class="alert alert-warning alert-dismissible fade show">
+                You must login to access this page.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+        </form>
     </div>
-    <form method="POST" action="/getAdmin" style="width: 100%; margin-left: auto; margin-right: auto">
-        <div class="form-group">
-            <label for="password" style="margin-left:10px">Password</label>
-            <input type="password" id="passwordField" name="passwordField" class="form-control" placeholder="Password"
-                required>
-        </div>
-        <div class="form-group">
-            <button type="submit" style="margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%; height: 40px"
-                name="login" value="Login" class="btn btn-outline-danger">Login</button>
-        </div>
-        {% if passwordFailed == True %}
-        <div class="alert alert-danger">
-            Incorrect Password
-        </div>
-        {% endif %}
-        {% if notLoggedIn == True %}
-        <div class="alert alert-warning">
-            You must login to access this page
-        </div>
-        {% endif %}
-    </form>
+    <a href="/home" class="btn btn-outline-success" style="margin-top:20px; margin-left: 25%; margin-right: 25%; font-size: 15px; width: 50%; height: 40px">Return Home</a>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
     </div>
@@ -49,6 +58,12 @@
     <div class="alert alert-secondary" style="padding-top: 10px">
         <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
