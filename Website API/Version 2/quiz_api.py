@@ -87,6 +87,13 @@ def getAdmin():
     return response
 
 
+@APP.route('/removeAdmin', methods=['GET', 'POST'])
+def removeAdmin():
+    response = flask.make_response(flask.redirect(flask.url_for('home')))
+    response.set_cookie('userAdmin', '0')
+    return response
+
+
 @APP.route('/adminPanel', methods=['GET', 'POST'])
 def adminPanel():
     if not 'userAdmin' in request.cookies:
