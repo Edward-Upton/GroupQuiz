@@ -3,12 +3,14 @@
         "Example Quiz 1": {
             "name": "Example Quiz 1",
             "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
+            "countdownTime": 10,
             "answers": ["A", "B", "C"],
             "available": true
         },
         "Example Quiz 2": {
             "name": "Example Quiz 2",
             "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
+            "countdownTime": 10,
             "answers": ["A", "B", "C"],
             "available": true
         }
