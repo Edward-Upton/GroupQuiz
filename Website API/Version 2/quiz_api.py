@@ -442,12 +442,14 @@ def quizPage():
         questionList = quizDict["questions"][questionNumber]
         questionName = questionList[0]
         questionChoices = questionList[1:]
+        countdownTime = quizDict["countdownTime"]
 
         response = flask.make_response(flask.render_template("quizPage.html", quizName=currentQuiz,
                                                              questionName=questionName, questionChoices=questionChoices,
                                                              code=request.cookies.get(
                                                                  "userCode"),
-                                                             year=request.cookies.get("userGroup")))
+                                                             year=request.cookies.get("userGroup"),
+                                                             countdownTime=countdownTime))
         #response.set_cookie("questionNumber", str(questionNumber + 1))
 
     else:
