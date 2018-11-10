@@ -5,13 +5,20 @@ Authors:
     Edward Upton (engiego)
 """
 
-#import string
+<<<<<<< HEAD
+# import string
+=======
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
 import json
 import os
 import random
-
+import time
+import threading
 import flask
-#from numpy import random
+<<<<<<< HEAD
+# from numpy import random
+=======
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
 from contextlib import closing
 from flask import request  # , make_response
 from flaskext.mysql import MySQL
@@ -36,6 +43,7 @@ with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
 
 with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
     votesDict = json.load(fp)
+
 
 VOTING_READY = True  # Need API to toggle voting
 
@@ -113,9 +121,14 @@ def adminPanel():
     for quiz in quizzesDict["quizzes"]:
         with closing(make_connection()) as conn:
             with conn as cursor:
+<<<<<<< HEAD
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" %
+                               quizzesDict["quizzes"][quiz]["name"])
+=======
                 cursor.execute(
                     "SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quiz)
                 # Get total answers for current quiz
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
                 quizCount = cursor.fetchone()[0]
 
                 quizQuestions = quizzesDict["quizzes"][quiz]["questions"]
@@ -139,10 +152,15 @@ def adminPanel():
 
         quizzes.append(dict(
             quizName=quizzesDict["quizzes"][quiz]["name"],
+<<<<<<< HEAD
             quizAvaliable=quizzesDict["quizzes"][quiz]["available"],
+            quizCount=quizCount))
+=======
+            quizAvailable=quizzesDict["quizzes"][quiz]["available"],
             quizCount=quizCount,
             quizResults=quizResults
         ))
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
 
     for vote in votesDict["votes"]:
         with closing(make_connection()) as conn:
@@ -167,16 +185,22 @@ def adminPanel():
 
         votes.append(dict(
             voteName=votesDict["votes"][vote]["name"],
+<<<<<<< HEAD
             voteAvaliable=votesDict["votes"][vote]["available"],
+            voteCount=voteCount))
+    print(len(votes))
+=======
+            voteAvailable=votesDict["votes"][vote]["available"],
             voteResults=voteResults,
             voteCount=voteCount))
 
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
     return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen, quizzes=quizzes, votes=votes)
 
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
-    #global code_list
+    # global code_list
     if 'userCode' in request.cookies:
         # if request.cookies.get('userCode') in code_list:
         return flask.redirect(flask.url_for('home'))
@@ -187,7 +211,7 @@ def normalUser():
 
 
 def create_code():
-    #global code_list
+    # global code_list
     with open(os.path.join(CWD, "names.txt")) as lfp:
         listNames = lfp.readlines()
 
@@ -199,11 +223,15 @@ def create_code():
 
     with closing(make_connection()) as conn:
         with conn as cursor:
+<<<<<<< HEAD
+        # cursor = CONN.cursor()
+=======
             # cursor = CONN.cursor()
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
             cursor.execute(
                 "SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
         # CONN.commit()
-        #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        # code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
             while code == cursor.fetchone()[0]:
                 # code = ''.join(random.choices(
                 #     string.ascii_uppercase + string.digits, k=4))
@@ -448,7 +476,7 @@ def quizPage():
                                                              code=request.cookies.get(
                                                                  "userCode"),
                                                              year=request.cookies.get("userGroup")))
-        #response.set_cookie("questionNumber", str(questionNumber + 1))
+        # response.set_cookie("questionNumber", str(questionNumber + 1))
 
     else:
         response = flask.make_response(flask.redirect(flask.url_for("/home")))
@@ -492,8 +520,55 @@ def getAnswer():
     return response
 
 
+<<<<<<< HEAD
+# @APP.route('/userGraphs', methods=['GET', 'POST'])
+# def userGraphs():
+
+#     with closing(make_connection()) as conn:
+#         with conn as cursor:
+            
+
+#     return flask.render_template("userGraphs.html")
+=======
+@APP.route('/userGraphs', methods=['GET', 'POST'])
+def userGraphs():
+
+    votes = []
+
+    for vote in votesDict["votes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" %
+                               votesDict["votes"][vote]["name"])
+                voteCount = cursor.fetchone()[0]
+
+                voteResults = []
+                voteTally = []
+                voteQuestions = votesDict["votes"][vote]["options"]
+                voteName = votesDict["votes"][vote]["name"]
+                for possibleOption in voteQuestions:
+                    cursor.execute(
+                        "SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE (`voteName` = '%s' AND `voteAnswer` = '%s')" % (vote, possibleOption))
+                    voteTally.append(cursor.fetchone()[0])
+                voteResults = dict(
+                    voteQuestions=voteQuestions,
+                    voteTally=voteTally
+                )
+
+        votes.append(dict(
+            voteName=votesDict["votes"][vote]["name"],
+            voteAvailable=votesDict["votes"][vote]["available"],
+            voteResults=voteResults,
+            voteCount=voteCount))
+    print(votes)
+    return flask.render_template("userGraphs.html", votes=votes)
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
+
+
 if __name__ == "__main__":
     # try:
+    # thread = threading.Thread(target=updatingQuizVotes)
+    # thread.start()
     APP.run(host="0.0.0.0", port=80, debug=DEBUG)
     # finally:
     #     return

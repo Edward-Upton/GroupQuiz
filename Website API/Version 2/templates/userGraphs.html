@@ -6,15 +6,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" media="screen" href="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+<<<<<<< HEAD
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div class="alert alert-secondary">
-        <strong>Here are todays results</strong>
+        <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
     </div>
-    
+
+    <div class="alert alert-primary">
+        <strong>Todays' Vote Results</strong>
+    </div>
+    <div class="container-fluid rounded" style="border-radius:15px">
+        <strong>LOL</strong>
+    </div>
+
 </body>
+=======
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
+        crossorigin="anonymous"></script>
+    <script src="../static/js/Chart.js"></script>
+</head>
+
+<body>
+    <div class="alert alert-info" style="text-align: center; font-size: 200%">
+        <strong>Here Are The Results of Today's Voting</strong>
+    </div>
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
+        {% for vote in votes %}
+        {% if vote.voteAvailable %}
+        <div class="alert alert-primary">
+            <strong>{{ vote.voteName }}</strong>
+        </div>
+        <div class="container-fluid rounded" style="border-radius:5px; padding:5px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            <canvas id="{{ vote.voteName }}Graph"></canvas>
+            <script>
+                var ctx = document.getElementById("{{ vote.voteName }}Graph");
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ vote.voteResults.voteQuestions | safe }},
+                datasets: [{
+                    label: '# of Votes',
+                    data: {{ vote.voteResults.voteTally | safe }},
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                    borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                    borderWidth: 1
+        }]
+            },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+        });
+            </script>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+
+</html>
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
