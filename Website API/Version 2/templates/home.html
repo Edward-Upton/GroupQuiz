@@ -6,9 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script></head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
+        crossorigin="anonymous"></script>
+</head>
 
 <body>
     <div class="alert alert-secondary">
@@ -41,32 +45,24 @@
 
     </div>
 
-
-    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
-        <h4 style="text-align: center">Vote Events</h4>
-        <p style="text-align: center">Have your say about on-stage events!</p>
-        <form method="POST" , action="/getVote" , style="width: 100%; margin-left: auto; margin-right: auto">
-            {% for vote in votes %}
-            <div>
-                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ vote }}' type='submit' value='{{ vote }}'>{{ vote }}</button>
-            </div>
-            {% endfor %}
-            {% if votes|length == 0 %}
-            <div style="width:100%">
-                <p style="text-align: center">There are no more votes running right now.</p>
-            </div>
-            {% endif %}
-        </form>
-    </div>
-
-
-    <hr>
-
-
     <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Quiz Events</h4>
-        <p style="text-align: center">Answer questions with limited time!</p>
+        <p style="text-align: center">5 Credits to enter a quiz.</p>
+        {% if nocredits == 1 %}
+        <div class="alert alert-danger" role="alert">
+            <p style="text-align: center"><strong>You have no credits.</strong></p>
+            <a href="/redeemCreditCode">
+                <button type="button" style="width: 100%" class="btn btn-outline-danger">Claim Credits</button>
+            </a>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <p style="text-align: center">You have<strong> {{ credits }} </strong>credits.</p>
+            <a href="/redeemCreditCode">
+                <button type="button" style="width: 100%" class="btn btn-outline-primary">Claim more Credits</button>
+            </a>
+        </div>
+        {% endif %}
         <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
             {% for quiz in quizzes %}
             <div>
@@ -83,12 +79,32 @@
     </div>
 
     <hr>
-  <div class="btn btn-primary">
+
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
+        <h4 style="text-align: center">Vote Events</h4>
+        <p style="text-align: center">Free to Enter.</p>
+        <form method="POST" , action="/getVote" , style="width: 100%; margin-left: auto; margin-right: auto">
+            {% for vote in votes %}
+            <div>
+                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
+                    name='{{ vote }}' type='submit' value='{{ vote }}'>{{ vote }}</button>
+            </div>
+            {% endfor %}
+            {% if votes|length == 0 %}
+            <div style="width:100%">
+                <p style="text-align: center">There are no more votes running right now.</p>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <hr>
+    <!-- <div class="btn btn-primary">
         <a href='/userGraphs'>
             <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" name='results'
                 type='submit' value='results'>Results</button>
         </a>
-    </div>
+    </div> -->
 
     <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Stats</h4>
@@ -111,7 +127,7 @@
     </div>
     </p>
     <div class="alert alert-secondary" style="padding-top: 10px">
-            <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
+        <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
 </body>
 

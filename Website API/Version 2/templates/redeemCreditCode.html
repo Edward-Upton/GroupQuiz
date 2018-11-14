@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Charities Day</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="alert alert-secondary">
+        <img src="../static/files/cdLogoQuiz.png" style="max-width:200px; height:auto; display: block; margin: 0 auto">
+    </div>
+
+    <div class="container-fluid" style="padding: 20px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
+        {% if badcode == 1 %}
+        <div class="alert alert-warning">
+            That code does not exist.
+        </div>
+        {% elif claimedcode == 1 %}
+        <div class="alert alert-danger">
+                That code has already been claimed.
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Please enter your six digit code.
+        </div>
+        {% endif %}
+        <div class="container-fluid" style="padding: 20px; background-color: rgb(255, 255, 255); border-radius:15px;margin-left:2%;margin-right:2%;width:96%">
+            <form method="POST" action="/getCreditCode">
+                <div class="form-group">
+                    <div class="form-group">
+                      <label for="enteredCode">Six Digit Code</label>
+                      <input type="text" class="form-control" name="enteredCode" id="enteredCode" aria-describedby="codeHelp" placeholder="6 Digit Code">
+                      <small id="codeHelp" class="form-text text-muted">Example: A1B2C3</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" style="width:100%">Submit Code</button>
+            </form>
+            <p style="text-align: center; width:100%; margin-top:20px">Or, alternatively:</p>
+            <a href="/home">
+                <div class="btn btn-outline-info" style="width: 100%; margin-top:5px">
+                    Return to Home
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
+        <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers
+    </div>
+    </p>
+    <div class="alert alert-secondary" style="padding-top: 10px">
+        <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
+    </div>
+</body>

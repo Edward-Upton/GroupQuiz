@@ -312,9 +312,73 @@ def home():
                 votes.append(votesDict["votes"][vote]["name"])
 
     # if request.cookies.get("quizData"):
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
+
+    if currency < 5:
+        nocredits = 1
+    else:
+        nocredits = request.args.get('nocredits')
 
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
-                                 year=request.cookies.get("userGroup"), quizzes=quizzes, votes=votes, votesEntered=str(len(userVotesAnswered)), quizzesEntered=str(len(userQuizzesAnswered)))
+                                 year=request.cookies.get("userGroup"), nocredits=nocredits, credits=str(currency), quizzes=quizzes, votes=votes, votesEntered=str(len(userVotesAnswered)), quizzesEntered=str(len(userQuizzesAnswered)))
+
+
+@APP.route('/redeemCreditCode', methods=['GET', 'POST'])
+def redeemCreditCode():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    if request.args.get("badcode") == "1":
+        return flask.render_template('redeemCreditCode.html', badcode=True)
+
+    if request.args.get("claimedcode") == "1":
+        return flask.render_template('redeemCreditCode.html', claimedcode=True)
+
+    return flask.render_template('redeemCreditCode.html')
+
+
+
+@APP.route('/getCreditCode', methods=['GET', 'POST'])
+def getCreditCode():#
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+    if "enteredCode" not in request.form:
+        return flask.redirect(flask.url_for('redeemCreditCode'))
+
+    entered_code = request.form["enteredCode"]
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`credit_codes` WHERE (`codeString` = '%s');" % entered_code)
+            bad_code = cursor.fetchone()[0]
+
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`credit_codes` WHERE (`claimed`= 1 AND `codeString` = '%s');" % entered_code)
+            claimed_code = cursor.fetchone()[0]
+    if bad_code == 0:
+        return flask.redirect(flask.url_for('redeemCreditCode',badcode="1"))
+    if claimed_code >= 1:
+        return flask.redirect(flask.url_for('redeemCreditCode',claimedcode="1"))
+
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            cursor.execute("SELECT creditId FROM charities_day.credit_codes WHERE (`codeString`= '%s');" % entered_code)
+            code_id = cursor.fetchone()[0]
+            cursor.execute("UPDATE `charities_day`.`credit_codes` SET `claimed` = '1' WHERE (`creditId` = '%s') and (`codeString` = '%s');" % (code_id, entered_code))
+            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` + 10 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
+    return flask.redirect(flask.url_for('home'))
 
 
 @APP.route('/getVote', methods=['GET', 'POST'])
@@ -408,8 +472,22 @@ def getQuiz():
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
 
-    quiz = next(iter(request.form))
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
 
+    if currency < 5:
+        return flask.redirect(flask.url_for('home',nocredits=1))
+
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
+    quiz = next(iter(request.form))
+ 
     response = flask.make_response(flask.redirect(flask.url_for('quizPage')))
     response.set_cookie('currentQuiz', quiz)
     response.set_cookie('questionNumber', '0')
