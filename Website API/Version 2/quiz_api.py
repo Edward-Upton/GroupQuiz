@@ -86,6 +86,16 @@ def getAdmin():
     response.set_cookie('userAdmin', '1')
     return response
 
+@APP.route('/updateEvents', methods=['GET', 'POST'])
+def updateEvents():
+    global quizzesDict
+    global votesDict
+    with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
+        quizzesDict = json.load(fp)
+
+    with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
+        votesDict = json.load(fp)
+    return flask.redirect(flask.url_for('admin'))
 
 @APP.route('/removeAdmin', methods=['GET', 'POST'])
 def removeAdmin():
@@ -304,12 +314,12 @@ def home():
     for quiz in quizzesDict["quizzes"]:
         if quizzesDict["quizzes"][quiz]["available"]:
             if not quiz in userQuizzesAnswered:
-                quizzes.append(quizzesDict["quizzes"][quiz]["name"])
+                quizzes.append(quizzesDict["quizzes"][quiz])#["name"])
 
     for vote in votesDict["votes"]:
         if votesDict["votes"][vote]["available"]:
             if not vote in userVotesAnswered:
-                votes.append(votesDict["votes"][vote]["name"])
+                votes.append(votesDict["votes"][vote])#["name"])
 
     # if request.cookies.get("quizData"):
     with closing(make_connection()) as conn:
@@ -389,6 +399,20 @@ def getVote():
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
 
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
+
+    if currency < 5:
+        return flask.redirect(flask.url_for('home',nocredits=1))
+
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
     vote = next(iter(request.form))  # Converts dict into iterable
 
     response = flask.make_response(flask.redirect(flask.url_for("votePage")))
@@ -459,7 +483,9 @@ def getVoteAnswer():
                                                          vote_option=answer,
                                                          voteName=currentVote))
     voteData = json.loads(request.cookies.get("userVoteData"))
-    voteData["votesAnswered"].append(currentVote)
+    if not votesDict["votes"][currentVote]["multiple"]:
+        voteData["votesAnswered"].append(currentVote)
+
     response.set_cookie("userVoteData", str(json.dumps(voteData)))
     return response
 
@@ -487,7 +513,7 @@ def getQuiz():
             cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
 
     quiz = next(iter(request.form))
- 
+
     response = flask.make_response(flask.redirect(flask.url_for('quizPage')))
     response.set_cookie('currentQuiz', quiz)
     response.set_cookie('questionNumber', '0')

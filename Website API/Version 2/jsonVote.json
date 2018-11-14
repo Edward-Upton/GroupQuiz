@@ -1,22 +1,28 @@
 {
     "votes": {
-        "Example Vote 1": {
-            "name": "Example Vote 1",
-            "description": "Example Vote Description",
+        "Emlyns Got Talent": {
+            "name": "Emlyns Got Talent",
+            "description": "Vote for your favourite EGT Act!",
             "options": ["Vote Option 1", "Vote Option 2"],
-            "available": true
+            "available": true,
+            "multiple": true,
+            "cost": 1
         },
-        "Example Vote 2": {
-            "name": "Example Vote 2",
-            "description": "Example Vote Description",
-            "options": ["Vote Option 1", "Vote Option 2"],
-            "available": true
+        "Great Emlyn Bake-Off": {
+            "name": "Great Emlyn Bake-Off",
+            "description": "Who should have won the Great Emlyn Bake-Off?",
+            "options": ["Mr Gale", "Mr Ward", "Mrs Newman", "Madame Grant"],
+            "available": true,
+            "multiple": true,
+            "cost": 1
         },
-        "Example Vote 3": {
-            "name": "Example Vote 3",
-            "description": "Example Vote Description",
+        "Costume Vote": {
+            "name": "Costume Vote",
+            "description": "What's your favourite costume theme this year?",
             "options": ["Vote Option 1", "Vote Option 2"],
-            "available": false
+            "available": true,
+            "multiple": false,
+            "cost": 0
         }
     }
 }

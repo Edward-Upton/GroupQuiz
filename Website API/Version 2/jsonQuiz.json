@@ -5,14 +5,16 @@
             "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
             "countdownTime": 10,
             "answers": ["A", "B", "C"],
-            "available": true
+            "available": true,
+            "cost": 1
         },
         "Example Quiz 2": {
             "name": "Example Quiz 2",
             "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
             "countdownTime": 10,
             "answers": ["A", "B", "C"],
-            "available": true
+            "available": true,
+            "cost": 1
         }
     }
 }
