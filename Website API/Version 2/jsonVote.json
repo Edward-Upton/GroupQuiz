@@ -4,7 +4,7 @@
             "name": "Emlyns Got Talent",
             "description": "Vote for your favourite EGT Act!",
             "options": ["Cerys & Band", "Tayla Cadwell", "Cerys & Caitlin", "Tom & Rowan", "Hari & Band"],
-            "available": false,
+            "available": true,
             "multiple": true,
             "cost": 1
         },
@@ -12,7 +12,7 @@
             "name": "Great Emlyn Bake-Off",
             "description": "Who should have won the Great Emlyn Bake-Off?",
             "options": ["Mr Gale", "Mr Ward", "Mrs Newman", "Madame Grant"],
-            "available": false,
+            "available": true,
             "multiple": true,
             "cost": 1
         },
@@ -20,7 +20,7 @@
             "name": "University Challenge",
             "description": "Who should have won the Great Emlyn Bake-Off?",
             "options": ["Male Teacher Team", "Female Teacher Team"],
-            "available": false,
+            "available": true,
             "multiple": true,
             "cost": 1
         },
@@ -28,7 +28,7 @@
             "name": "Costume Vote",
             "description": "What's your favourite costume theme this year?",
             "options": ["Vote Option 1", "Vote Option 2"],
-            "available": true,
+            "available": false,
             "multiple": false,
             "cost": 0
         },
@@ -36,7 +36,7 @@
             "name": "Pupil Challenges",
             "description": "Which pupil challenge was your favourite?",
             "options": ["Balloon Popping", "Chubby Bunny", "Mouth Opener", "Blindfold Drawing", "Riddles", "Bottle Flip"],
-            "available": false,
+            "available": true,
             "multiple": false,
             "cost": 0
         },
@@ -44,7 +44,7 @@
             "name": "Teacher Challenges",
             "description": "Which teacher challenge was your favourite?",
             "options": ["Chugging Fruit Juice", "Jelly Eating", "No-hands drawing"],
-            "available": true,
+            "available": false,
             "multiple": false,
             "cost": 0
         }
