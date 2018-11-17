@@ -405,15 +405,17 @@ def getVote():
             cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
             currency = cursor.fetchone()[0]
 
-    if currency < 5:
-        return flask.redirect(flask.url_for('home',nocredits=1))
-
-    with closing(make_connection()) as conn:
-        with conn as cursor:
-            # cursor = CONN.cursor()
-            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
-
     vote = next(iter(request.form))  # Converts dict into iterable
+
+    if votesDict["votes"][vote]["cost"] == 1:
+        if currency < 5:
+            return flask.redirect(flask.url_for('home',nocredits=1))
+
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                # cursor = CONN.cursor()
+                cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
 
     response = flask.make_response(flask.redirect(flask.url_for("votePage")))
     response.set_cookie('currentVote', vote)
@@ -504,15 +506,18 @@ def getQuiz():
             cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
             currency = cursor.fetchone()[0]
 
-    if currency < 5:
-        return flask.redirect(flask.url_for('home',nocredits=1))
-
-    with closing(make_connection()) as conn:
-        with conn as cursor:
-            # cursor = CONN.cursor()
-            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
-
     quiz = next(iter(request.form))
+
+
+    if quizzesDict["quizzes"][quiz]["cost"] == 1:
+        if currency < 5:
+            return flask.redirect(flask.url_for('home',nocredits=1))
+
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                # cursor = CONN.cursor()
+                cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
 
     response = flask.make_response(flask.redirect(flask.url_for('quizPage')))
     response.set_cookie('currentQuiz', quiz)
