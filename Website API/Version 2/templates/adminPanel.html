@@ -17,6 +17,44 @@
         <strong style="font-size: 20px">Charities Day Admin</strong>
         <a href='/removeAdmin' style="float: right">Logout</a>
     </div>
+<<<<<<< HEAD
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(220, 255, 255); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
+        <div class="container-fluid bg-primary" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+            <strong>Users: </strong><span class="badge">{{ userCount }}</span>
+        </div>
+        <div class="container-fluid bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+            <strong>Quiz SQL Entries: </strong><span class="badge">{{ quizSqlLen }}</span>
+        </div>
+        <div class="container-fluid" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            {% for quiz in quizzes %}
+            {% if quiz.quizAvaliable %}
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
+                name='{{ quiz.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ quiz.quizName
+                    }}</strong>: {{ quiz.quizCount }} answers</div>
+            {% else %}
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
+                name='{{ quiz.quizName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
+                    quiz.quizName }}</strong>: {{ quiz.quizCount }} answers</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="container-fluid bg-warning" style="padding:10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">
+            <strong>Vote SQL Entries: </strong><span class="badge">{{ voteSqlLen }}</span>
+        </div>
+        <div class="container-fluid" style="padding:10px; background-color: rgb(255, 255, 255); margin-top:5px; margin-bottom:15px; margin-left: 7%; margin-right: 7%; width:86%">
+            {% for vote in votes %}
+            {% if vote.voteAvaliable %}
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
+                name='{{ vote.voteName }}'><span class="glyphicon glyphicon-ok-circle"></span> <strong>{{ vote.voteName
+                    }}</strong>: {{ vote.voteCount }} votes</div>
+            {% else %}
+            <div style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('container-fluid bg-primary', 'container-fluid bg-info') }}"
+                name='{{ vote.voteName }}'><span class="glyphicon glyphicon-remove-circle"></span> <strong>{{
+                    vote.voteName }}</strong>: {{ vote.voteCount }} votes</div>
+            {% endif %}
+            {% endfor %}
+=======
     <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 5px;margin-left:2%; margin-right:2%; width:96%">
         <a href="/updateEvents"><button type="button" class="btn btn-outline-success" style="padding: 10px; margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px">Update all votes and quizzes</button>
         </a>
@@ -30,7 +68,7 @@
             </button>
             <div class="collapse" id="quizzesCollapse">
                 {% for quiz in quizzes %}
-                {% if quiz.quizAvaliable %}
+                {% if quiz.quizAvailable %}
                 <button type="button" data-toggle="collapse" data-target="#{{ quiz.quizName }}" aria-expanded="false"
                     aria-controls="{{ quiz.quizName }}" style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px"
                     class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" name='{{ quiz.quizName }}'>
@@ -75,7 +113,7 @@
             </button>
             <div class="collapse" id="votesCollapse">
                 {% for vote in votes %}
-                {% if vote.voteAvaliable %}
+                {% if vote.voteAvailable %}
                 <button class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}" type="button"
                     data-toggle="collapse" data-target="#{{ vote.voteName }}" aria-expanded="false" aria-controls="{{ vote.voteName }}"
                     style="margin-left: 10%; margin-right: 10%; font-size: 15px; width: 80%; margin-bottom:5px" name='{{ vote.voteName }}'>
@@ -105,6 +143,7 @@
                 <hr>
                 {% endfor %}
             </div>
+>>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
         </div>
     </div>
     </div>

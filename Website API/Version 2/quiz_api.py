@@ -5,13 +5,14 @@ Authors:
     Edward Upton (engiego)
 """
 
-#import string
+
 import json
 import os
 import random
-
+import time
+import threading
 import flask
-#from numpy import random
+
 from contextlib import closing
 from flask import request  # , make_response
 from flaskext.mysql import MySQL
@@ -36,6 +37,7 @@ with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
 
 with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
     votesDict = json.load(fp)
+
 
 VOTING_READY = True  # Need API to toggle voting
 
@@ -156,7 +158,7 @@ def adminPanel():
 
         quizzes.append(dict(
             quizName=quizzesDict["quizzes"][quiz]["name"],
-            quizAvaliable=quizzesDict["quizzes"][quiz]["available"],
+            quizAvailable=quizzesDict["quizzes"][quiz]["available"],
             quizCount=quizCount,
             quizResults=quizResults
         ))
@@ -184,7 +186,7 @@ def adminPanel():
 
         votes.append(dict(
             voteName=votesDict["votes"][vote]["name"],
-            voteAvaliable=votesDict["votes"][vote]["available"],
+            voteAvailable=votesDict["votes"][vote]["available"],
             voteResults=voteResults,
             voteCount=voteCount))
 
@@ -193,7 +195,7 @@ def adminPanel():
 
 @APP.route('/normalUser', methods=['GET', 'POST'])
 def normalUser():
-    #global code_list
+    # global code_list
     if 'userCode' in request.cookies:
         # if request.cookies.get('userCode') in code_list:
         return flask.redirect(flask.url_for('home'))
@@ -204,7 +206,7 @@ def normalUser():
 
 
 def create_code():
-    #global code_list
+    # global code_list
     with open(os.path.join(CWD, "names.txt")) as lfp:
         listNames = lfp.readlines()
 
@@ -216,11 +218,10 @@ def create_code():
 
     with closing(make_connection()) as conn:
         with conn as cursor:
-            # cursor = CONN.cursor()
             cursor.execute(
                 "SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
         # CONN.commit()
-        #code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        # code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
             while code == cursor.fetchone()[0]:
                 # code = ''.join(random.choices(
                 #     string.ascii_uppercase + string.digits, k=4))
@@ -610,8 +611,44 @@ def getAnswer():
     return response
 
 
+@APP.route('/userGraphs', methods=['GET', 'POST'])
+def userGraphs():
+
+    votes = []
+
+    for vote in votesDict["votes"]:
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE `voteName` = '%s'" %
+                               votesDict["votes"][vote]["name"])
+                voteCount = cursor.fetchone()[0]
+
+                voteResults = []
+                voteTally = []
+                voteQuestions = votesDict["votes"][vote]["options"]
+                voteName = votesDict["votes"][vote]["name"]
+                for possibleOption in voteQuestions:
+                    cursor.execute(
+                        "SELECT COUNT(*) FROM `charities_day`.`vote-results` WHERE (`voteName` = '%s' AND `voteAnswer` = '%s')" % (vote, possibleOption))
+                    voteTally.append(cursor.fetchone()[0])
+                voteResults = dict(
+                    voteQuestions=voteQuestions,
+                    voteTally=voteTally
+                )
+
+        votes.append(dict(
+            voteName=votesDict["votes"][vote]["name"],
+            voteAvailable=votesDict["votes"][vote]["available"],
+            voteResults=voteResults,
+            voteCount=voteCount))
+    print(votes)
+    return flask.render_template("userGraphs.html", votes=votes)
+
+  
 if __name__ == "__main__":
     # try:
+    # thread = threading.Thread(target=updatingQuizVotes)
+    # thread.start()
     APP.run(host="0.0.0.0", port=80, debug=DEBUG)
     # finally:
     #     return
