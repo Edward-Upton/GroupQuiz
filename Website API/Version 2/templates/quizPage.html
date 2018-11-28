@@ -6,12 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
-        crossorigin="anonymous"></script>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -25,31 +22,35 @@
     <div class="alert alert-info">
         <strong>QUIZ: {{ quizName }}</strong>
     </div>
-    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%; margin-bottom:20px">
         <div class="progress" style="width:80%; margin-right: 10%; margin-left:10%">
-            <div id="countdownBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+            <div id="countdownBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 100%"></div>
         </div>
-        <p style="text-align: center"><strong id="progressLeft">5</strong> seconds remaining!</p>
+        <p style="text-align: center"><strong><span id="progressLeft"></span></strong> seconds remaining!</p>
     </div>
     <script>
         function move(countdownTime) {
             var elem = document.getElementById("countdownBar");
             var width = 100;
-            var prg = document.getElementById("progressLeft")
             var id = setInterval(frame, (countdownTime * 10));
             function frame() {
+                if (width <= 25) {
+                    elem.className = "progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                } else if (width <= 50) {
+                    elem.className = "progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                }
                 if (width <= 1) {
                     clearInterval(id);
                 } else {
                     width--;
                     // document.getElementById("progressLeft").innerText = toString(Math.floor((width/100)*5))
-                    prg.innerText = toString(Math.floor((width / 100) * 5))
+                    document.getElementById("progressLeft").innerHTML = Math.floor((width / 100) * countdownTime+1)
                     elem.style.width = width + '%';
                 }
             }
         }
-        // move({{ countdownTime|safe }})
-        move(5)
+         move({{ countdownTime|safe }})
+        //move(10)
     </script>
     <div class="alert alert-warning">
         <h4 class="alert-heading">{{ questionName }}</h4>
@@ -65,7 +66,7 @@
             </div>
             {% endfor %}
             <script type="text/javascript">
-                var wait = setTimeout("document.question.submit();", 5500);
+                var wait = setTimeout("document.question.submit();", {{ countdownTime|safe }} * 1000 + 500);
             </script>
         </form>
     </div>
@@ -77,6 +78,9 @@
     <div class="alert alert-secondary" style="padding-top: 10px">
         <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/popper.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
 </body>
 
 </html>

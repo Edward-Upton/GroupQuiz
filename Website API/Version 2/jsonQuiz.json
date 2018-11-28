@@ -1,16 +1,36 @@
 {
     "quizzes": {
-        "Example Quiz 1": {
-            "name": "Example Quiz 1",
-            "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
-            "answers": ["A", "B", "C"],
-            "available": true
+        "Animals Quiz": {
+            "name": "Animals Quiz",
+            "questions": [["What type of animal is a seahorse", "Arachnid", "Fish", "Shell"], ["Which of the following dogs is the smallest?", "Dachshund", "Poodle", "Chihuahua"],["What color are zebras?", "White with black stripes", "Black with white stripes", "Both of the above"],["Which pet is most popular?", "Dogs", "Cats", "Hamsters"],["Which of these animals sleep standing up?","Camels","Ravens","Flamingos"]],
+            "countdownTime": 10,
+            "answers": ["Fish", "Chihuahua", "Black with white stripes", "Cats", "Flamingos"],
+            "available": true,
+            "cost": 1
         },
-        "Example Quiz 2": {
-            "name": "Example Quiz 2",
-            "questions": [["Question 1", "A", "B", "C"], ["Question 2", "A", "B", "C"],["Question 3", "A", "B", "C"]],
-            "answers": ["A", "B", "C"],
-            "available": true
+        "Trivia Quiz": {
+            "name": "Trivia Quiz",
+            "questions": [["How many colours are there in a rainbow?", "8", "7", "6"], ["What do you call a time span of 1000 years?", "Decade", "Century", "Millennium"], ["Which British coin was also known as a bob?", "Shilling", "Penny", "Dime"], ["How many sides does a dodecagon have?", "10", "12", "80"], ["How many holes are on a pool table?", "6", "8", "4"], ["The Dewey Decimal system is used to categorise what?", "Numbers", "Books", "Bottles"]],
+            "countdownTime": 10,
+            "answers": ["7", "Millennium", "Shilling", "12", "6", "Books"],
+            "available": true,
+            "cost": 1
+        },
+        "Science Quiz": {
+            "name": "Science Quiz",
+            "questions": [["What is the biggest planet in our solar system?", "Jupiter", "Saturn", "Mercury"], ["What is the 7th element on the Periodic Table?", "Oxygen", "Nitrogen", "Carbon"], ["The fear of what animal is known as Arachnophobia?", "Spiders", "Birds", "Reptiles"], ["What is the name given to molten rock from a volcano?", "Obsidian", "Rock Glass", "Lava"], ["What type of compound is HCl?", "An Acid", "A base", "An alloy"], ["What is the largest part of a flower called?", "Stem", "Anther", "Leaves"], ["How many bones do Sharks have in their bodies?", "356", "0", "218"]],
+            "countdownTime": 10,
+            "answers": ["Jupiter", "Nitrogen", "Spiders", "Lava", "An Acid", "Stem", "0"],
+            "available": true,
+            "cost": 1
+        },
+        "Video Game Quiz": {
+            "name": "Video Game Quiz",
+            "questions": [["Name the princess that Mario tries to rescue.", "Princess Daisy", "Princess Peach", "Rosalina"], ["How many rows of aliens are there at the start of Space Invaders?", "6", "5", "4"], ["Who is the main character of the Legend of Zelda?", "Zelda", "Ganon", "Link"], ["How many places begin with T in Fortnite?", "2", "3", "1"], ["What must a Creeper be hit with to become charged?", "Glowstone", "Potion of Strength", "Lightning Bolt"], ["Who is the most famous video game character of all time?", "Link", "Mario", "Sonic"], ["What was the first home console?", "Odyssey", "NES", "Atari"]],
+            "countdownTime": 10,
+            "answers": ["Princess Peach", "5", "Link", "2", "Lightning Bolt", "Mario", "Odyssey"],
+            "available": true,
+            "cost": 1
         }
     }
 }

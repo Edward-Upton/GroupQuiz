@@ -5,20 +5,14 @@ Authors:
     Edward Upton (engiego)
 """
 
-<<<<<<< HEAD
-# import string
-=======
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
+
 import json
 import os
 import random
 import time
 import threading
 import flask
-<<<<<<< HEAD
-# from numpy import random
-=======
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
+
 from contextlib import closing
 from flask import request  # , make_response
 from flaskext.mysql import MySQL
@@ -94,6 +88,23 @@ def getAdmin():
     response.set_cookie('userAdmin', '1')
     return response
 
+@APP.route('/updateEvents', methods=['GET', 'POST'])
+def updateEvents():
+    global quizzesDict
+    global votesDict
+    with open(os.path.join(CWD, "jsonQuiz.json"), "r") as fp:
+        quizzesDict = json.load(fp)
+
+    with open(os.path.join(CWD, "jsonVote.json"), "r") as fp:
+        votesDict = json.load(fp)
+    return flask.redirect(flask.url_for('admin'))
+
+@APP.route('/removeAdmin', methods=['GET', 'POST'])
+def removeAdmin():
+    response = flask.make_response(flask.redirect(flask.url_for('home')))
+    response.set_cookie('userAdmin', '0')
+    return response
+
 
 @APP.route('/adminPanel', methods=['GET', 'POST'])
 def adminPanel():
@@ -121,14 +132,9 @@ def adminPanel():
     for quiz in quizzesDict["quizzes"]:
         with closing(make_connection()) as conn:
             with conn as cursor:
-<<<<<<< HEAD
-                cursor.execute("SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" %
-                               quizzesDict["quizzes"][quiz]["name"])
-=======
                 cursor.execute(
                     "SELECT COUNT(*) FROM `charities_day`.`quiz-answers` WHERE `quizName` = '%s'" % quiz)
                 # Get total answers for current quiz
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
                 quizCount = cursor.fetchone()[0]
 
                 quizQuestions = quizzesDict["quizzes"][quiz]["questions"]
@@ -152,15 +158,10 @@ def adminPanel():
 
         quizzes.append(dict(
             quizName=quizzesDict["quizzes"][quiz]["name"],
-<<<<<<< HEAD
-            quizAvaliable=quizzesDict["quizzes"][quiz]["available"],
-            quizCount=quizCount))
-=======
             quizAvailable=quizzesDict["quizzes"][quiz]["available"],
             quizCount=quizCount,
             quizResults=quizResults
         ))
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
 
     for vote in votesDict["votes"]:
         with closing(make_connection()) as conn:
@@ -185,16 +186,10 @@ def adminPanel():
 
         votes.append(dict(
             voteName=votesDict["votes"][vote]["name"],
-<<<<<<< HEAD
-            voteAvaliable=votesDict["votes"][vote]["available"],
-            voteCount=voteCount))
-    print(len(votes))
-=======
             voteAvailable=votesDict["votes"][vote]["available"],
             voteResults=voteResults,
             voteCount=voteCount))
 
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
     return flask.render_template("adminPanel.html", userCount=userCount, quizSqlLen=quizSqlLen, voteSqlLen=voteSqlLen, quizzes=quizzes, votes=votes)
 
 
@@ -223,11 +218,6 @@ def create_code():
 
     with closing(make_connection()) as conn:
         with conn as cursor:
-<<<<<<< HEAD
-        # cursor = CONN.cursor()
-=======
-            # cursor = CONN.cursor()
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
             cursor.execute(
                 "SELECT COUNT(1) FROM `charities_day`.`users` WHERE `userCode` = '%s'" % (code))
         # CONN.commit()
@@ -325,17 +315,81 @@ def home():
     for quiz in quizzesDict["quizzes"]:
         if quizzesDict["quizzes"][quiz]["available"]:
             if not quiz in userQuizzesAnswered:
-                quizzes.append(quizzesDict["quizzes"][quiz]["name"])
+                quizzes.append(quizzesDict["quizzes"][quiz])#["name"])
 
     for vote in votesDict["votes"]:
         if votesDict["votes"][vote]["available"]:
             if not vote in userVotesAnswered:
-                votes.append(votesDict["votes"][vote]["name"])
+                votes.append(votesDict["votes"][vote])#["name"])
 
     # if request.cookies.get("quizData"):
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
+
+    if currency < 5:
+        nocredits = 1
+    else:
+        nocredits = request.args.get('nocredits')
 
     return flask.render_template('home.html', code=request.cookies.get('userCode'),
-                                 year=request.cookies.get("userGroup"), quizzes=quizzes, votes=votes, votesEntered=str(len(userVotesAnswered)), quizzesEntered=str(len(userQuizzesAnswered)))
+                                 year=request.cookies.get("userGroup"), nocredits=nocredits, credits=str(currency), quizzes=quizzes, votes=votes, votesEntered=str(len(userVotesAnswered)), quizzesEntered=str(len(userQuizzesAnswered)))
+
+
+@APP.route('/redeemCreditCode', methods=['GET', 'POST'])
+def redeemCreditCode():
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+
+    if request.args.get("badcode") == "1":
+        return flask.render_template('redeemCreditCode.html', badcode=True)
+
+    if request.args.get("claimedcode") == "1":
+        return flask.render_template('redeemCreditCode.html', claimedcode=True)
+
+    return flask.render_template('redeemCreditCode.html')
+
+
+
+@APP.route('/getCreditCode', methods=['GET', 'POST'])
+def getCreditCode():#
+    if not 'userCode' in request.cookies:
+        return flask.redirect(flask.url_for('getCode'))
+
+    if not 'userGroup' in request.cookies:
+        return flask.redirect(flask.url_for('getYear'))
+    if "enteredCode" not in request.form:
+        return flask.redirect(flask.url_for('redeemCreditCode'))
+
+    entered_code = request.form["enteredCode"]
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`credit_codes` WHERE (`codeString` = '%s');" % entered_code)
+            bad_code = cursor.fetchone()[0]
+
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT COUNT(*) FROM `charities_day`.`credit_codes` WHERE (`claimed`= 1 AND `codeString` = '%s');" % entered_code)
+            claimed_code = cursor.fetchone()[0]
+    if bad_code == 0:
+        return flask.redirect(flask.url_for('redeemCreditCode',badcode="1"))
+    if claimed_code >= 1:
+        return flask.redirect(flask.url_for('redeemCreditCode',claimedcode="1"))
+
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            cursor.execute("SELECT creditId FROM charities_day.credit_codes WHERE (`codeString`= '%s');" % entered_code)
+            code_id = cursor.fetchone()[0]
+            cursor.execute("UPDATE `charities_day`.`credit_codes` SET `claimed` = '1' WHERE (`creditId` = '%s') and (`codeString` = '%s');" % (code_id, entered_code))
+            cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` + 10 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
+    return flask.redirect(flask.url_for('home'))
 
 
 @APP.route('/getVote', methods=['GET', 'POST'])
@@ -346,7 +400,23 @@ def getVote():
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
 
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
+
     vote = next(iter(request.form))  # Converts dict into iterable
+
+    if votesDict["votes"][vote]["cost"] == 1:
+        if currency < 5:
+            return flask.redirect(flask.url_for('home',nocredits=1))
+
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                # cursor = CONN.cursor()
+                cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
 
     response = flask.make_response(flask.redirect(flask.url_for("votePage")))
     response.set_cookie('currentVote', vote)
@@ -416,7 +486,9 @@ def getVoteAnswer():
                                                          vote_option=answer,
                                                          voteName=currentVote))
     voteData = json.loads(request.cookies.get("userVoteData"))
-    voteData["votesAnswered"].append(currentVote)
+    if not votesDict["votes"][currentVote]["multiple"]:
+        voteData["votesAnswered"].append(currentVote)
+
     response.set_cookie("userVoteData", str(json.dumps(voteData)))
     return response
 
@@ -429,7 +501,24 @@ def getQuiz():
     if not 'userGroup' in request.cookies:
         return flask.redirect(flask.url_for('getYear'))
 
+    with closing(make_connection()) as conn:
+        with conn as cursor:
+            # cursor = CONN.cursor()
+            cursor.execute("SELECT `userCredits` FROM `charities_day`.`users` WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+            currency = cursor.fetchone()[0]
+
     quiz = next(iter(request.form))
+
+
+    if quizzesDict["quizzes"][quiz]["cost"] == 1:
+        if currency < 5:
+            return flask.redirect(flask.url_for('home',nocredits=1))
+
+        with closing(make_connection()) as conn:
+            with conn as cursor:
+                # cursor = CONN.cursor()
+                cursor.execute("UPDATE `charities_day`.`users` SET `userCredits` = `userCredits` - 5 WHERE (`userCode` = '%s');" % request.cookies.get('userCode'))
+
 
     response = flask.make_response(flask.redirect(flask.url_for('quizPage')))
     response.set_cookie('currentQuiz', quiz)
@@ -470,13 +559,15 @@ def quizPage():
         questionList = quizDict["questions"][questionNumber]
         questionName = questionList[0]
         questionChoices = questionList[1:]
+        countdownTime = quizDict["countdownTime"]
 
         response = flask.make_response(flask.render_template("quizPage.html", quizName=currentQuiz,
                                                              questionName=questionName, questionChoices=questionChoices,
                                                              code=request.cookies.get(
                                                                  "userCode"),
-                                                             year=request.cookies.get("userGroup")))
-        # response.set_cookie("questionNumber", str(questionNumber + 1))
+                                                             year=request.cookies.get("userGroup"),
+                                                             countdownTime=countdownTime))
+        #response.set_cookie("questionNumber", str(questionNumber + 1))
 
     else:
         response = flask.make_response(flask.redirect(flask.url_for("/home")))
@@ -520,16 +611,6 @@ def getAnswer():
     return response
 
 
-<<<<<<< HEAD
-# @APP.route('/userGraphs', methods=['GET', 'POST'])
-# def userGraphs():
-
-#     with closing(make_connection()) as conn:
-#         with conn as cursor:
-            
-
-#     return flask.render_template("userGraphs.html")
-=======
 @APP.route('/userGraphs', methods=['GET', 'POST'])
 def userGraphs():
 
@@ -562,9 +643,8 @@ def userGraphs():
             voteCount=voteCount))
     print(votes)
     return flask.render_template("userGraphs.html", votes=votes)
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
 
-
+  
 if __name__ == "__main__":
     # try:
     # thread = threading.Thread(target=updatingQuizVotes)

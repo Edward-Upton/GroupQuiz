@@ -6,12 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Charities Day</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl"
-        crossorigin="anonymous"></script>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -45,60 +42,104 @@
 
     </div>
 
-
-    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
-        <h4 style="text-align: center">Vote Events</h4>
-        <p style="text-align: center">Have your say about on-stage events!</p>
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
+        <h4 style="text-align: center">Charity Events</h4>
+        <p style="text-align: center">5 Credits to enter one of these events.</p>
+        {% if nocredits == 1 %}
+        <div class="alert alert-danger" role="alert">
+            <p style="text-align: center"><strong>You have no credits.</strong></p>
+            <a href="/redeemCreditCode">
+                <button type="button" style="width: 100%" class="btn btn-outline-danger">Claim Credits</button>
+            </a>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <p style="text-align: center">You have<strong> {{ credits }} </strong>credits.</p>
+            <a href="/redeemCreditCode">
+                <button type="button" style="width: 100%" class="btn btn-primary">Claim more Credits</button>
+            </a>
+        </div>
+        {% endif %}
         <form method="POST" , action="/getVote" , style="width: 100%; margin-left: auto; margin-right: auto">
             {% for vote in votes %}
+            {% if vote.cost == 1 %}
             <div>
                 <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ vote }}' type='submit' value='{{ vote }}'>{{ vote }}</button>
-            </div>
-            {% endfor %}
-            {% if votes|length == 0 %}
-            <div style="width:100%">
-                <p style="text-align: center">There are no more votes running right now.</p>
+                    name='{{ vote.name }}' type='submit' value='{{ vote.name }}'>{{ vote.name }}
+                    {% if vote.multiple %}
+                    <span class="badge badge-pill badge-light">Multiple Entry</span>
+                    {% else %}
+                    <span class="badge badge-pill badge-light">Single Entry</span>
+                    {% endif %}
+                </button>
             </div>
             {% endif %}
+            {% endfor %}
         </form>
-    </div>
-
-
-    <hr>
-
-
-    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
-        <h4 style="text-align: center">Quiz Events</h4>
-        <p style="text-align: center">Answer questions with limited time!</p>
         <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
             {% for quiz in quizzes %}
+            {% if quiz.cost == 1 %}
             <div>
                 <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
-                    name='{{ quiz }}' type='submit' value='{{ quiz }}'>{{ quiz }}</button>
-            </div>
-            {% endfor %}
-            {% if quizzes|length == 0 %}
-            <div style="width:100%">
-                <p style="text-align: center">There are no more quizzes available right now.</p>
+                    name='{{ quiz.name }}' type='submit' value='{{ quiz.name }}'>{{ quiz.name }}</button>
             </div>
             {% endif %}
-        </form>
+            {% endfor %}
+            </form>
+            {% if quizzes|length == 0 and votes|length == 0%}
+            <div style="width:100%">
+                <p style="text-align: center">There are no more events available right now.</p>
+            </div>
+            {% endif %}
     </div>
-<<<<<<< HEAD
 
     <hr>
+
+    <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px;margin-left:2%; margin-right:2%; width:96%">
+        <h4 style="text-align: center">Free to Enter</h4>
+        <p style="text-align: center">These events are completely free to participate in!</p>
+        <form method="POST" , action="/getVote" , style="width: 100%; margin-left: auto; margin-right: auto">
+            {% for vote in votes %}
+            {% if vote.cost == 0 %}
+            <div>
+                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
+                    name='{{ vote.name }}' type='submit' value='{{ vote.name }}'>{{ vote.name }}
+                    {% if vote.multiple %}
+                    <span class="badge badge-pill badge-light">Multiple Entry</span>
+                    {% else %}
+                    <span class="badge badge-pill badge-light">Single Entry</span>
+                    {% endif %}
+                </button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </form>
+        <form method='POST' action='/getQuiz' style="width: 100%; margin-left: auto; margin-right: auto">
+            {% for quiz in quizzes %}
+            {% if quiz.cost == 0 %}
+            <div>
+                <button style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" class="{{ loop.cycle('btn btn-outline-primary', 'btn btn-outline-info') }}"
+                    name='{{ quiz.name }}' type='submit' value='{{ quiz.name }}'>{{ quiz.name }}</button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </form>
+            {% if quizzes|length == 0 and votes|length == 0%}
+            <div style="width:100%">
+                <p style="text-align: center">There are no more events available right now.</p>
+            </div>
+            {% endif %}
+    </div>
+
+    <!-- <div class="btn btn-primary">
         <a href='/userGraphs'>
             <button class="btn btn-outline-primary" style="margin-left: 5%; margin-right: 5%; font-size: 15px; width: 90%; margin-bottom:5px" name='results'
                 type='submit' value='results'>Results</button>
-=======
     <div style="padding: 10px">
         <a href='/userGraphs'>
             <button class="btn btn-outline-success" style="margin-left: 20%; margin-right: 20%; font-size: 15px; width: 60%; margin-bottom:5px"
                 name='results' type='submit' value='results'>Today's Results</button>
->>>>>>> 3ea307e266ad22a31897aa74067925d60789ef46
-        </a>
-    </div>
+    </div> -->
 
     <div class="container-fluid rounded" style="padding: 10px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
         <h4 style="text-align: center">Stats</h4>
@@ -123,6 +164,9 @@
     <div class="alert alert-secondary" style="padding-top: 10px">
         <p style="text-align: center">Programmed by <strong>ENTITY Development</strong> and <strong>Bit Bandits</strong></p>
     </div>
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/js/popper.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
 </body>
 
 </html>

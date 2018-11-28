@@ -17,18 +17,38 @@
     </div>
 
     <div class="container-fluid" style="padding: 20px; background-color: rgb(240, 240, 240); border-radius: 15px; margin-left:2%; margin-right:2%; width:96%">
-        <div class="alert alert-info">
-            <strong>{{ quizName }}</strong>: Your answers have been counted.
+        {% if badcode == 1 %}
+        <div class="alert alert-warning">
+            That code does not exist.
         </div>
-        <div class="alert alert-success">
-            <strong>{{ code }}</strong>, you can return back to your home panel.
+        {% elif claimedcode == 1 %}
+        <div class="alert alert-danger">
+                That code has already been claimed.
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            Please enter your six digit code.
+        </div>
+        {% endif %}
+        <div class="container-fluid" style="padding: 20px; background-color: rgb(255, 255, 255); border-radius:15px;margin-left:2%;margin-right:2%;width:96%">
+            <form method="POST" action="/getCreditCode">
+                <div class="form-group">
+                    <div class="form-group">
+                      <label for="enteredCode">Six Digit Code</label>
+                      <input type="text" class="form-control" name="enteredCode" id="enteredCode" aria-describedby="codeHelp" placeholder="6 Digit Code">
+                      <small id="codeHelp" class="form-text text-muted">Example: A1B2C3</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" style="width:100%">Submit Code</button>
+            </form>
+            <p style="text-align: center; width:100%; margin-top:20px">Or, alternatively:</p>
+            <a href="/home">
+                <div class="btn btn-outline-info" style="width: 100%; margin-top:5px">
+                    Return to Home
+                </div>
+            </a>
         </div>
 
-        <a href="/home">
-            <div class="btn btn-success" style="width: 100%">
-                Return to Home
-            </div>
-        </a>
     </div>
     <div class="alert alert-warning" style="margin-top: 50px; font-style: italic; height: 10px">
         <p style="text-align: center; margin-top: -10px">Powered By <strong>Team Lightning</strong> Servers

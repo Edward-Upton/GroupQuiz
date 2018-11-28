@@ -1,22 +1,52 @@
 {
     "votes": {
-        "Example Vote 1": {
-            "name": "Example Vote 1",
-            "description": "Example Vote Description",
-            "options": ["Vote Option 1", "Vote Option 2"],
-            "available": true
+        "Emlyns Got Talent": {
+            "name": "Emlyns Got Talent",
+            "description": "Vote for your favourite EGT Act!",
+            "options": ["Cerys & Band", "Tayla Cadwell", "Cerys & Caitlin", "Tom & Rowan", "Hari & Band"],
+            "available": true,
+            "multiple": true,
+            "cost": 1
         },
-        "Example Vote 2": {
-            "name": "Example Vote 2",
-            "description": "Example Vote Description",
-            "options": ["Vote Option 1", "Vote Option 2"],
-            "available": true
+        "Great Emlyn Bake-Off": {
+            "name": "Great Emlyn Bake-Off",
+            "description": "Who should have won the Great Emlyn Bake-Off?",
+            "options": ["Mr Gale", "Mr Ward", "Mrs Newman", "Madame Grant"],
+            "available": true,
+            "multiple": true,
+            "cost": 1
         },
-        "Example Vote 3": {
-            "name": "Example Vote 3",
-            "description": "Example Vote Description",
+        "University Challenge": {
+            "name": "University Challenge",
+            "description": "Who should have won the Great Emlyn Bake-Off?",
+            "options": ["Male Teacher Team", "Female Teacher Team"],
+            "available": true,
+            "multiple": true,
+            "cost": 1
+        },
+        "Costume Vote": {
+            "name": "Costume Vote",
+            "description": "What's your favourite costume theme this year?",
             "options": ["Vote Option 1", "Vote Option 2"],
-            "available": false
+            "available": false,
+            "multiple": false,
+            "cost": 0
+        },
+        "Pupil Challenges": {
+            "name": "Pupil Challenges",
+            "description": "Which pupil challenge was your favourite?",
+            "options": ["Balloon Popping", "Chubby Bunny", "Mouth Opener", "Blindfold Drawing", "Riddles", "Bottle Flip"],
+            "available": true,
+            "multiple": false,
+            "cost": 0
+        },
+        "Teacher Challenges": {
+            "name": "Teacher Challenges",
+            "description": "Which teacher challenge was your favourite?",
+            "options": ["Chugging Fruit Juice", "Jelly Eating", "No-hands drawing"],
+            "available": false,
+            "multiple": false,
+            "cost": 0
         }
     }
 }
