@@ -35,3 +35,17 @@ Quizzes and events are stored in JSON meaning you can add and remove them, or ed
 The admin panel allows you to see statistics from how many users exist to what events have been entered.
 
 <p align="center"><img style="width:256px" src="docs\phone-admin.png"></p>
+
+## Backstory
+
+Mentioned earlier, this project was created for our school's annual Charities day. We wanted to find a way to get more people engaged in activities during the day so we turned to technology.
+
+During this project we have learned many new skills. We had great Python knowledge already but learning Flask in detail has been great at improving our understanding of websites. Furthermore, we learned how to use MySQL, CSS, Javascript, and Jinja2.
+
+All of this for a fun side project which turned out to be successful! We ran the server on one of our computers during the day where people would connect to a specific connection point to visit the GroupQuiz website. 
+
+## Authors
+
+**Edward Upton** ([engiego](https://www.github.com/engiego))
+
+**Ben Dodd** ([mitgobla](https://www.github.com/mitgobla))
